@@ -1,0 +1,41 @@
+<!doctype html>
+
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+
+	<title>Getränke</title>
+	<meta name="description" content="Freilab Getränkeabrechnungssystem">
+	<meta name="author" content="Johannes Jordan">
+	<link rel="icon" href="{{ url_for('static', filename='icon/favicon.ico') }}">
+	{% for file in assets.css %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/'+file+'.css') }}">
+	{% endfor %}
+	{% for file in assets.js %}
+	<script defer src="{{ url_for('static', filename='js/'+file+'.js') }}"></script>
+	{% endfor %}
+	<script>let initial = {{ payload|tojson|safe }};</script>
+</head>
+<body>
+	<noscript>
+		<strong>Please enable Javascript to make this work.</strong>
+	</noscript>
+	{% raw %}
+	<div id='app'>
+		<h1>Products</h1>
+		<ul id="products">
+			<li v-for="p in products" :key="p.id">
+				{{ p.name }} <i v-if="p.isOrganic" class="fas fa-leaf"></i>
+				<button v-on:click="buy(p)">Nehm ich!</button>
+			</li>
+		</ul>
+		<h1>Users</h1>
+		<ul id="users">
+			<li v-for="u in users" :key="u.id">
+			{{ u.username }}
+			</li>
+		</ul>
+	</div>
+	{% endraw %}
+</body>
+</html>
