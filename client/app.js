@@ -1,22 +1,30 @@
 'use strict';
 
 var socket = io();
-socket.on('connect', () => {
-	socket.emit('my event', {data: 'Connected!'}, (one, two) => {
-		console.log(one + ' ' + two);
-	});
-	
-});
+
 var app = new Vue({
 	el: '#app',
 	data: {
-	    message: 'Hello Vue!',
 	    products: initial.products,
-    	users: initial.users
+		users: initial.users,
+		current_user: null
 	},
 	methods: {
+		format_prize: (value) => Number.parseFloat(value).toFixed(2),
+		select_user: (user) => {
+			app.current_user = user
+			// update anything we might need to manually update?
+		},
+		deselect_user: () => { app.current_user = null; },
 		buy: (product) => {
-			socket.emit('my event', {data: 'Bought' + product.id + '!'});
+			if (!app.current_user) {
+				console.log("Kein Nutzer ausgewählt!")
+				return;
+			}
+			socket.emit('purchase', {uid: app.current_user.id, pid: product.id}, (ret) => {
+				if (!ret.success)
+					console.log("damn!");
+			});
 		}
 	}
 });

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import time
 from flask import render_template
+from sqlalchemy import exc
 from init import app, db, socketio
 import model as m
 
@@ -8,8 +9,16 @@ import model as m
 def assets():
 	return {
 		# note: use vue.min, socket.io.slim in production
-		'js': ['vue/vue', 'socket.io/socket.io', 'fontawesome/fontawesome-all.min', 'app'],
-		'css': ['fontawesome/fa-svg-with-js']
+		'js': [
+			'jquery/jquery.slim.min', 'popper/popper.min', 'bootstrap/bootstrap.min',
+			'vue/vue', 'bootstrap-vue/bootstrap-vue.min',
+			'socket.io/socket.io',
+			'fontawesome/fontawesome-all.min',
+			'app'],
+		'css': [
+			'app', 'bootstrap-vue/bootstrap-vue.min',
+			'fontawesome/fa-svg-with-js'
+		]
 	}
 
 # retrieve initial full data needed by client
@@ -23,10 +32,29 @@ def payload():
 def home():
 	return render_template('index.html', assets=assets(), payload=payload())
 
-@socketio.on('my event')
-def handle_my_custom_event(json):
-	print('received json: ' + str(json))
-	return 'one', 2    
+@socketio.on('purchase')
+def purchase(json):
+	print(dict(json))
+	user = m.User.query.get(json['uid'])
+	if user is None:
+		return {'success': False, 'message': 'Nutzer ungültig!'}
+	if 'pid' in json:
+		product = m.Product.query.get(json['pid'])
+		if product is None:
+			return {'success': False, 'message': 'Produkt ungültig!'}
+	else:
+		product = None # for deposits, basically
+	
+	# perform purchase
+	transaction = m.Transaction(user=user, product=product, amount=product.prize)
+	user.balance -= product.prize
+	db.session.add(transaction)
+	try:
+		db.session.commit()
+	except:
+		return {'success': False, 'message': 'Datenbankeintrag gescheitert!'}
+	return {'success': True}
+		
 
 @app.url_defaults
 def add_stamp(endpoint, values):

@@ -18,23 +18,39 @@
 </head>
 <body>
 	<noscript>
-		<strong>Please enable Javascript to make this work.</strong>
+		<style>#app { display:none; }</style>
+		<div class="alert alert-danger" role="alert">Please enable Javascript to make this work.</div>
 	</noscript>
 	{% raw %}
 	<div id='app'>
-		<h1>Products</h1>
-		<ul id="products">
-			<li v-for="p in products" :key="p.id">
-				{{ p.name }} <i v-if="p.isOrganic" class="fas fa-leaf"></i>
-				<button v-on:click="buy(p)">Nehm ich!</button>
-			</li>
-		</ul>
-		<h1>Users</h1>
-		<ul id="users">
-			<li v-for="u in users" :key="u.id">
-			{{ u.username }}
-			</li>
-		</ul>
+		<b-alert variant="success" dismissible show>Bassd.</b-alert>
+		<transition name="slide"><b-container v-show="current_user">
+			<h1>Produkte</h1>
+			<b-card-group deck>
+				<b-card v-for="p in products" :key="p.id"
+					:title="p.name"
+					:img-src="'static/img/products/' + p.picture"
+					img-top img-fluid>
+					<!-- same as subtitle attr -->
+					<h6 class="card-subtitle md-2 text-info">
+						<strong>{{ p.size }}</strong>
+						<span v-if="p.isOrganic"><i class="text-success fas fa-leaf"></i></span>
+					</h6>
+					<b-button block size="lg" variant="outline-success" v-on:click="buy(p)">
+						<h1>€ <strong>{{ format_prize(p.prize) }}</strong></h1>
+					</b-button>
+				</b-card>
+			</b-card-group>
+		</b-container></transition>
+		<div>
+			<h1>Nutzer <small v-show="current_user != null"><b-link v-on:click="deselect_user">Abwählen</b-link></small></h1>
+			<ul id="users">
+				<li v-for="u in users" :key="u.id">
+					<b-link v-if="current_user != u" v-on:click="select_user(u)">{{ u.username }}</b-link>
+					<span v-else>{{ u.username }}</span>
+				</li>
+			</ul>
+		</div>
 	</div>
 	{% endraw %}
 </body>

@@ -1,1 +1,1 @@
-../../client/bower_components/socket.io-client/dist/
+../../client/bower_components/socket.io-client/dist

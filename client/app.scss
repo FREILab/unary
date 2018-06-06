@@ -1,0 +1,33 @@
+// custom font
+@font-face {
+	font-family: "tstar";
+	font-weight: normal;
+	src: url('tstar-regular-webfont.woff2') format('woff2');
+}
+@font-face {
+	font-family: "tstar";
+	font-weight: bold;
+	src: url('tstar-regular-webfont.woff2') format('woff2');
+}
+
+// Bootstrap variable overrides
+$font-family-sans-serif:	tstar;
+
+// Bootstrap and its default variables
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// our animation
+#app {
+	overflow-x: hidden;
+}
+
+.slide-leave-active,
+.slide-enter-active {
+  transition: 1s;
+}
+.slide-enter {
+  transform: translate(100%, 0);
+}
+.slide-leave-to {
+  transform: translate(100%, 0);
+}
