@@ -24,8 +24,16 @@
 	{% raw %}
 	<div id='app'>
 		<b-alert variant="success" dismissible show>Bassd.</b-alert>
-		<transition name="slide"><b-container v-show="current_user">
-			<h1>Produkte</h1>
+		<transition-group name="slide" class="slide" tag="div">
+		<b-container key="products" v-show="current_user" fluid>
+			<b-row align-h="between">
+				<b-col cols="7">
+					<h1>Getränkeauswahl für {{ current_user ? current_user.username : 'niemand' }}</h1>
+				</b-col>
+				<b-col cols="3">
+					<b-button variant="primary" v-on:click="deselect_user" block size="lg">Fertig</b-button>
+				</b-col>
+			</b-row>
 			<b-card-group deck>
 				<b-card v-for="p in products" :key="p.id"
 					:title="p.name"
@@ -41,16 +49,17 @@
 					</b-button>
 				</b-card>
 			</b-card-group>
-		</b-container></transition>
-		<div>
-			<h1>Nutzer <small v-show="current_user != null"><b-link v-on:click="deselect_user">Abwählen</b-link></small></h1>
+		</b-container>
+		<b-container key="users" v-show="current_user == null" fluid>
+			<h1>Nutzer</h1>
 			<ul id="users">
 				<li v-for="u in users" :key="u.id">
 					<b-link v-if="current_user != u" v-on:click="select_user(u)">{{ u.username }}</b-link>
 					<span v-else>{{ u.username }}</span>
 				</li>
 			</ul>
-		</div>
+		</b-container>
+		</transition-group>
 	</div>
 	{% endraw %}
 </body>

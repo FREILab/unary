@@ -6297,10 +6297,13 @@ a.text-dark:hover, a.text-dark:focus {
 
 .slide-leave-active,
 .slide-enter-active {
-  transition: 1s; }
+  transition: .5s; }
 
 .slide-enter {
   transform: translate(100%, 0); }
 
 .slide-leave-to {
-  transform: translate(100%, 0); }
+  transform: translate(-100%, 0); }
+
+.slide > div {
+  position: absolute; }
