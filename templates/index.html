@@ -28,7 +28,7 @@
 		<b-container key="products" v-show="current_user" fluid>
 			<b-row align-h="between">
 				<b-col cols="7">
-					<h1>Getränkeauswahl für {{ current_user ? current_user.username : 'niemand' }}</h1>
+					<h1>{{ current_user ? current_user.username : 'niemand' }}, was möchtest du?</h1>
 				</b-col>
 				<b-col cols="3">
 					<b-button variant="primary" v-on:click="deselect_user" block size="lg">Fertig</b-button>
@@ -38,13 +38,15 @@
 				<b-card v-for="p in products" :key="p.id"
 					:title="p.name"
 					:img-src="'static/img/products/' + p.picture"
-					img-top img-fluid>
-					<!-- same as subtitle attr -->
-					<h6 class="card-subtitle md-2 text-info">
+					img-top img-fluid
+					body-class="d-flex flex-column"
+					class="mb-4"
+					>
+					<h6 slot="header" class="mb-0">
 						<strong>{{ p.size }}</strong>
 						<span v-if="p.isOrganic"><i class="text-success fas fa-leaf"></i></span>
 					</h6>
-					<b-button block size="lg" variant="outline-success" v-on:click="buy(p)">
+					<b-button class="mt-auto" block size="lg" variant="outline-success" v-on:click="buy(p)">
 						<h1>€ <strong>{{ format_prize(p.prize) }}</strong></h1>
 					</b-button>
 				</b-card>
