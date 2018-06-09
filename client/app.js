@@ -10,7 +10,7 @@ var app = new Vue({
 		current_user: null
 	},
 	methods: {
-		format_prize: (value) => Number.parseFloat(value).toFixed(2),
+		format_money: (value) => Number.parseFloat(value).toFixed(2),
 		select_user: (user) => {
 			app.current_user = user
 			// update anything we might need to manually update?

@@ -6,7 +6,19 @@
 @font-face {
   font-family: "tstar";
   font-weight: bold;
-  src: url("tstar-regular-webfont.woff2") format("woff2"); }
+  src: url("tstar-bold-webfont.woff2") format("woff2"); }
+
+@font-face {
+  font-family: "tstar";
+  font-weight: normal;
+  font-style: italic;
+  src: url("tstar-italic-webfont.woff2") format("woff2"); }
+
+@font-face {
+  font-family: "tstar";
+  font-weight: bold;
+  font-style: italic;
+  src: url("tstar-bolditalic-webfont.woff2") format("woff2"); }
 
 /*!
  * Bootstrap v4.1.1 (https://getbootstrap.com/)
@@ -6292,12 +6304,18 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
+button.buy, button.done {
+  font-size: 2rem; }
+
+.product > .card {
+  min-height: 100%; }
+
 #app {
   overflow-x: hidden; }
 
 .slide-leave-active,
 .slide-enter-active {
-  transition: .5s; }
+  transition: .5s ease-in-out; }
 
 .slide-enter {
   transform: translate(100%, 0); }

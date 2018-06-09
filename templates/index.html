@@ -23,44 +23,78 @@
 	</noscript>
 	{% raw %}
 	<div id='app'>
-		<b-alert variant="success" dismissible show>Bassd.</b-alert>
 		<transition-group name="slide" class="slide" tag="div">
-		<b-container key="products" v-show="current_user" fluid>
-			<b-row align-h="between">
-				<b-col cols="7">
-					<h1>{{ current_user ? current_user.username : 'niemand' }}, was möchtest du?</h1>
-				</b-col>
-				<b-col cols="3">
-					<b-button variant="primary" v-on:click="deselect_user" block size="lg">Fertig</b-button>
-				</b-col>
-			</b-row>
-			<b-card-group deck>
-				<b-card v-for="p in products" :key="p.id"
-					:title="p.name"
-					:img-src="'static/img/products/' + p.picture"
-					img-top img-fluid
-					body-class="d-flex flex-column"
-					class="mb-4"
+		<div key="products" v-if="current_user" class="w-100">
+			<b-navbar variant="dark" type="dark">
+				<b-navbar-brand>Hallo, {{ current_user.username }}!</b-navbar-brand>
+				<b-navbar-brand>
+					Dein Guthaben: €
+					<strong 
+						:class="{'bg-danger': current_user.balance<0, 'text-warning': current_user.balance<5 && current_user.balance>=0}"
 					>
-					<h6 slot="header" class="mb-0">
-						<strong>{{ p.size }}</strong>
-						<span v-if="p.isOrganic"><i class="text-success fas fa-leaf"></i></span>
-					</h6>
-					<b-button class="mt-auto" block size="lg" variant="outline-success" v-on:click="buy(p)">
-						<h1>€ <strong>{{ format_prize(p.prize) }}</strong></h1>
-					</b-button>
-				</b-card>
-			</b-card-group>
-		</b-container>
-		<b-container key="users" v-show="current_user == null" fluid>
-			<h1>Nutzer</h1>
-			<ul id="users">
-				<li v-for="u in users" :key="u.id">
-					<b-link v-if="current_user != u" v-on:click="select_user(u)">{{ u.username }}</b-link>
-					<span v-else>{{ u.username }}</span>
-				</li>
-			</ul>
-		</b-container>
+						{{ format_money(current_user.balance) }}
+					</strong>
+				</b-navbar-brand>
+			</b-navbar>
+			<b-container fluid>
+				<b-row class="mt-2 mb-2" align-h="between" align-v="end">
+					<b-col>
+						<h1>Was möchtest du?</h1>
+					</b-col>
+					<b-col cols="3">
+						<b-button v-on:click="deselect_user"
+							variant="primary" block size="lg"
+							class="done"
+						>
+							Fertig
+						</b-button>
+					</b-col>
+				</b-row>
+				<b-row>
+					<b-col cols="3" v-for="p in products" :key="p.id"
+						class="mb-4 product">
+						<b-card
+							:header="p.name" header-tag="h4"
+							:img-src="'static/img/products/' + p.picture"
+							img-top img-fluid
+							body-class="d-flex flex-column"
+						>
+							<div>
+								<strong>{{ p.size }}</strong>
+								<span v-if="p.isOrganic">
+									<i class="text-success fas fa-leaf"></i>
+								</span>
+								<span v-if="p.description">
+									/ <span v-html="p.description"></span>
+								</span>
+							</div>
+							<b-button v-on:click="buy(p)"
+								class="buy mt-auto" block size="lg" variant="outline-success"
+							>
+								€ <strong>{{ format_money(p.prize) }}</strong>
+							</b-button>
+						</b-card>
+					</b-col>
+				</b-row>
+			</b-container>
+		</div>
+		<div key="users" v-show="current_user == null" class="w-100">
+			<b-navbar variant="primary" type="dark">
+				<b-navbar-brand>Zum Wohl!</b-navbar-brand>
+				<b-navbar-brand>
+					Getränkeabrechnung im Freilab
+				</b-navbar-brand>
+			</b-navbar>
+			<b-container fluid>
+				<h1>Wer bist du?</h1>
+				<ul id="users">
+					<li v-for="u in users" :key="u.id">
+						<b-link v-if="current_user != u" v-on:click="select_user(u)">{{ u.username }}</b-link>
+						<span v-else>{{ u.username }}</span>
+					</li>
+				</ul>
+			</b-container>
+		</div>
 		</transition-group>
 	</div>
 	{% endraw %}
