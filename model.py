@@ -40,11 +40,12 @@ class User(ExportableMixin, db.Model):
 
 class Product(ExportableMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	enabled = db.Column(db.Boolean, default=False, nullable=False)
 	name = db.Column(db.String(80), unique=True, nullable=False)
 	picture = db.Column(db.String(80), default='generic.png')
 	size = db.Column(db.String(20), nullable=False)
 	prize = db.Column(db.Float, nullable=False)
-	enabled = db.Column(db.Boolean, default=False, nullable=False)
+	description = db.Column(db.String(500), default='', nullable=False)
 	isOrganic = db.Column(db.Boolean, default=False, nullable=False)
 
 	transactions = db.relationship('Transaction', backref='product')
