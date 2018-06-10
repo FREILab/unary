@@ -15,7 +15,7 @@ def assets():
 			'tweenjs/Tween', 'lib/vue-animated-number',
 			'socket.io/socket.io',
 			'fontawesome/fontawesome-all.min',
-			'app'],
+		],
 		'css': [
 			'app', 'bootstrap-vue/bootstrap-vue.min',
 			'fontawesome/fa-svg-with-js'
