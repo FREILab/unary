@@ -6310,7 +6310,7 @@ button.buy, button.done {
 .product > .card {
   min-height: 100%; }
 
-#app {
+body {
   overflow-x: hidden; }
 
 .slide-leave-active,
