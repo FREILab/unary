@@ -25,8 +25,8 @@ def assets():
 # retrieve initial full data needed by client
 def payload():
 	return {
-		'products': [p.export() for p in m.Product.query.all()],
-		'users' : [u.export() for u in m.User.query.all()]
+		'products': [p.export() for p in m.Product.query.order_by('name').all()],
+		'users' : [u.export() for u in m.User.query.order_by('username').all()]
 	}
 
 @app.route("/")
