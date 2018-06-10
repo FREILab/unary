@@ -54,6 +54,7 @@ def purchase(json):
 		db.session.commit()
 	except:
 		return {'success': False, 'message': 'Datenbankeintrag gescheitert!'}
+	socketio.emit('user changed', user.export())
 	return {'success': True}
 		
 

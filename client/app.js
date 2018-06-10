@@ -29,3 +29,10 @@ var app = new Vue({
 	}
 });
 
+socket.on('user changed', user => {
+	let target = app.current_user; // typically the current user receives updates
+	if (!target || target.id !== user.id) {
+		target = app.users.find(u => u.id === user.id);
+	}
+	Object.assign(target, user);
+});
