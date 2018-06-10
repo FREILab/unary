@@ -32,7 +32,7 @@
 					<strong 
 						:class="{'bg-danger': current_user.balance<0, 'text-warning': current_user.balance<5 && current_user.balance>=0}"
 					>
-						{{ format_money(current_user.balance) }}
+						<animated-number :value="current_user.balance" :decimals=2></animated-number>
 					</strong>
 				</b-navbar-brand>
 			</b-navbar>
