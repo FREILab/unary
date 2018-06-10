@@ -35,7 +35,6 @@ def home():
 
 @socketio.on('purchase')
 def purchase(json):
-	print(dict(json))
 	user = m.User.query.get(json['uid'])
 	if user is None:
 		return {'success': False, 'message': 'Nutzer ungültig!'}
@@ -56,7 +55,6 @@ def purchase(json):
 		return {'success': False, 'message': 'Datenbankeintrag gescheitert!'}
 	socketio.emit('user changed', user.export())
 	return {'success': True}
-		
 
 @app.url_defaults
 def add_stamp(endpoint, values):
