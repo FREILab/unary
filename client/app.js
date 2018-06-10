@@ -7,21 +7,32 @@ var app = new Vue({
 	data: {
 	    products: initial.products,
 		users: initial.users,
-		current_user: null
+		current_user: null,
+		user_timeout : null,
+		user_filter: '',
+	},
+	computed: {
+		filtered_users: function() {
+			return this.users.filter(u => u.username.toLowerCase().startsWith(this.user_filter.toLowerCase()));
+		}
 	},
 	methods: {
-		format_money: (value) => Number.parseFloat(value).toFixed(2),
-		select_user: (user) => {
-			app.current_user = user
-			// update anything we might need to manually update?
+		format_money: value => Number.parseFloat(value).toFixed(2),
+		select_user: function (user) {
+			this.current_user = user
+			// add/update a simple timeout
+			if (this.user_timeout)
+				clearTimeout(this.user_timeout);
+			this.user_timeout = setTimeout(() => { this.deselect_user(); }, 60000)
 		},
-		deselect_user: () => { app.current_user = null; },
-		buy: (product) => {
+		new_user: () => { /* TODO */ },
+		deselect_user: function () { this.current_user = null; },
+		buy: function (product) {
 			if (!app.current_user) {
 				console.log("Kein Nutzer ausgewählt!")
 				return;
 			}
-			socket.emit('purchase', {uid: app.current_user.id, pid: product.id}, (ret) => {
+			socket.emit('purchase', {uid: app.current_user.id, pid: product.id}, ret => {
 				if (!ret.success)
 					console.log("damn!");
 			});
