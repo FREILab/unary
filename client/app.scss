@@ -30,11 +30,16 @@ $font-family-sans-serif:	tstar;
 
 // custom elements
 button.buy, button.done {
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 
-.product > .card {
-	min-height: 100%;
+.product {
+	> .card {
+		min-height: 100%;
+		.card-body {
+			padding-top: .75rem;
+		}
+	}
 }
 
 // our animation

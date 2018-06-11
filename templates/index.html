@@ -55,27 +55,7 @@
 					<b-col v-for="p in products" :key="p.id"
 						sm="6" md="6" lg="4" xl="3"
 						class="mb-4 product">
-						<b-card
-							:header="p.name" header-tag="h4"
-							:img-src="'static/img/products/' + p.picture"
-							img-top img-fluid
-							body-class="d-flex flex-column"
-						>
-							<div>
-								<strong>{{ p.size }}</strong>
-								<span v-if="p.isOrganic">
-									<i class="text-success fas fa-leaf"></i>
-								</span>
-								<span v-if="p.description">
-									/ <span v-html="p.description"></span>
-								</span>
-							</div>
-							<b-button v-on:click="buy(p)"
-								class="buy mt-auto" block size="lg" variant="outline-success"
-							>
-								€ <strong>{{ format_money(p.prize) }}</strong>
-							</b-button>
-						</b-card>
+						<product :product="p" v-on:order="buy(p)"></product>
 					</b-col>
 				</b-row>
 			</b-container>

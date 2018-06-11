@@ -6305,10 +6305,12 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6; } }
 
 button.buy, button.done {
-  font-size: 2rem; }
+  font-size: 1.5rem; }
 
 .product > .card {
   min-height: 100%; }
+  .product > .card .card-body {
+    padding-top: .75rem; }
 
 body {
   overflow-x: hidden; }
