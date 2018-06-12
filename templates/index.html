@@ -51,13 +51,17 @@
 						</b-button>
 					</b-col>
 				</b-row>
-				<b-row>
-					<b-col v-for="p in products" :key="p.id"
-						sm="6" md="6" lg="4" xl="3"
-						class="mb-4 product">
-						<product :product="p" v-on:order="buy(p)"></product>
-					</b-col>
-				</b-row>
+				<b-card-group
+					v-for="i in Math.ceil(products.length / 5)" :key="i"
+					deck class="mb-4"
+				>
+					<product 
+						v-for="p in products.slice((i-1)*5, i*5)"
+						:key="p.id"
+						:product="p" v-on:order="buy(p)"
+						class="product" style="max-width: 18%"
+					></product>
+				</b-card-group>
 			</b-container>
 		</div>
 		<div key="users" v-show="current_user == null" class="w-100">
