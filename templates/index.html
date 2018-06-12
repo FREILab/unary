@@ -88,18 +88,9 @@
 				</b-row>
 				<b-row>
 					<b-col v-for="u in filtered_users" :key="u.id"
-						sm="6" md="6" lg="4" xl="3"
+						sm="6" md="4" lg="3" xl="2"
 						class="mb-4 user">
-						<b-link v-on:click="select_user(u)">
-							<b-card body-class="text-center">
-								<b-img :src="'static/img/users/' + u.picture"
-									center :blank="u.picture == 'generic.png'" :blank-color="u.color"
-									rounded="circle" width="150" height="150"
-									class="mb-4"
-								></b-img>
-								<h4>{{ u.username }}</h4>
-							</b-card>
-						</b-link>
+						<user :user="u" v-on:select="select_user(u)"></user>
 					</b-col>
 				</b-row>
 			</b-container>
