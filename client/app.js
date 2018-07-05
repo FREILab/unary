@@ -5,7 +5,7 @@ var socket = io();
 var app = new Vue({
 	el: '#app',
 	data: {
-	    products: initial.products,
+		products: initial.products,
 		users: initial.users,
 		current_user: null,
 		user_timeout : null,
