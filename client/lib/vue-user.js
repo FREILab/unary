@@ -1,7 +1,7 @@
 Vue.component('user', {
 	template: `
 	<b-link v-on:click="$emit('select')">
-		<b-card body-class="text-center">
+		<b-card v-bind="$attrs" v-on="$listeners" body-class="text-center">
 			<b-img :src="'static/img/users/' + user.picture"
 				center :blank="user.picture == 'generic.png'" :blank-color="user.color"
 				rounded="circle" width="100" height="100"

@@ -12,8 +12,18 @@ var app = new Vue({
 		user_filter: '',
 	},
 	computed: {
-		filtered_users: function() {
+		filtered_users: function () {
 			return this.users.filter(u => u.username.toLowerCase().startsWith(this.user_filter.toLowerCase()));
+		},
+		guest_user: function () {
+			// TODO: hack, maybe mark on the server or deliver separately?
+			return this.users.find(u => u.id == 1);
+		},
+
+		favorite_users: function () {
+			let latest = this.users.filter(u => (u !== this.guest_user && u.lastActivity))
+				.sort((a, b) => a.lastActivity < b.lastActivity)
+			return latest.slice(0, 5)
 		}
 	},
 	methods: {

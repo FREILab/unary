@@ -6307,9 +6307,9 @@ a.text-dark:hover, a.text-dark:focus {
 button.buy, button.done {
   font-size: 1.5rem; }
 
-.product > .card {
+.product {
   min-height: 100%; }
-  .product > .card .card-body {
+  .product .card-body {
     padding-top: .75rem; }
 
 body {
@@ -6327,3 +6327,8 @@ body {
 
 .slide > div {
   position: absolute; }
+
+.piss-off {
+  transition: opacity 1.25s ease-out; }
+  .piss-off.gone {
+    opacity: 0; }

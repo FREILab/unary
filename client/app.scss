@@ -34,11 +34,9 @@ button.buy, button.done {
 }
 
 .product {
-	> .card {
-		min-height: 100%;
-		.card-body {
-			padding-top: .75rem;
-		}
+	min-height: 100%;
+	& .card-body {
+		padding-top: .75rem;
 	}
 }
 
@@ -59,4 +57,11 @@ body {
 }
 .slide > div {
 	position: absolute;
+}
+
+.slowfade {
+	transition: opacity 1.25s ease-out;
+	&.gone {
+		opacity: 0;
+	}
 }

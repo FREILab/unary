@@ -27,15 +27,23 @@
 		<transition-group name="slide" class="slide" tag="div">
 		<div key="products" v-if="current_user" class="w-100">
 			<b-navbar :style="{ backgroundColor: current_user.color }" type="dark">
-				<b-navbar-brand>Hallo, {{ current_user.username }}!</b-navbar-brand>
-				<b-navbar-brand>
-					Dein Guthaben: €
-					<strong 
-						:class="{'bg-danger': current_user.balance<0, 'text-warning': current_user.balance<5 && current_user.balance>=0}"
-					>
-						<animated-number :value="current_user.balance" :decimals=2></animated-number>
-					</strong>
-				</b-navbar-brand>
+				<template v-if="current_user != guest_user">
+					<b-navbar-brand>Hallo, {{ current_user.username }}!</b-navbar-brand>
+					<b-navbar-brand>
+						Dein Guthaben: €
+						<strong 
+							:class="{'bg-danger': current_user.balance<0, 'text-warning': current_user.balance<5 && current_user.balance>=0}"
+						>
+							<animated-number :value="current_user.balance" :decimals=2></animated-number>
+						</strong>
+					</b-navbar-brand>
+				</template>
+				<template v-else>
+					<b-navbar-brand>
+						Getränkeabgabe auf <strong class="bg-danger">freiwilliger Spendenbasis</strong>.
+						<small>Abgabe nur an Gäste — Vereinsmitglieder bitte eigenes Konto anlegen!</small>
+					</b-navbar-brand>
+				</template>
 			</b-navbar>
 			<b-container fluid>
 				<b-row class="mt-2 mb-2" align-h="between" align-v="end">
@@ -90,11 +98,31 @@
 						</b-button>
 					</b-col>
 				</b-row>
+				<b-collapse id="patrons" :visible="!user_filter">
+					<b-row>
+						<b-col v-for="u in favorite_users" :key="u.id"
+							sm="6" md="4" lg="3" xl="2"
+							class="user">
+							<user :user="u" v-on:select="select_user(u)"
+								border-variant="primary"
+							></user>
+						</b-col>
+						<b-col v-if="guest_user"
+							sm="6" md="4" lg="3" xl="2"
+							class="user">
+							<user :user="guest_user" v-on:select="select_user(guest_user)"
+								bg-variant="warning"
+							></user>
+						</b-col>
+					</b-row>
+				</b-collapse>
+				<hr :class="{slowfade: true, gone: user_filter}">
 				<b-row>
 					<b-col v-for="u in filtered_users" :key="u.id"
 						sm="6" md="4" lg="3" xl="2"
 						class="mb-4 user">
-						<user :user="u" v-on:select="select_user(u)"></user>
+						<user :user="u" v-on:select="select_user(u)"
+						></user>
 					</b-col>
 				</b-row>
 			</b-container>
