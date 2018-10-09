@@ -21,7 +21,7 @@ class ExportableMixin(object):
 		ret = {}
 		for name in self._exportable_:
 			attr = getattr(self, name)
-			if (isinstance(attr, db.Model)):
+			if isinstance(attr, ExportableMixin):
 				attr = attr.export()
 			ret[name] = attr
 		return ret
