@@ -13,7 +13,10 @@ var app = new Vue({
 	},
 	computed: {
 		filtered_users: function () {
-			return this.users.filter(u => u.username.toLowerCase().startsWith(this.user_filter.toLowerCase()));
+			return this.users.filter(u => {
+				if (u.id == 1) return false; // TODO: see guest_user below
+				return u.username.toLowerCase().startsWith(this.user_filter.toLowerCase());
+			});
 		},
 		guest_user: function () {
 			// TODO: hack, maybe mark on the server or deliver separately?
