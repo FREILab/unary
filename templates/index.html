@@ -129,6 +129,20 @@
 			</b-container>
 		</div>
 		</transition-group>
+		<b-alert variant="danger" fade
+			:show="!connected"
+		>
+			<i class="float-left text-danger fas fa-2x fa-bolt" style="margin-right: 1ex;"></i>
+			Verbindung zum Server unterbrochen!
+		</b-alert>
+		<b-alert variant="danger" dismissible fade
+			:show="showErrorAlert" @dismissed="showErrorAlert=false"
+		>
+			<i class="float-left text-danger fas fa-3x fa-bolt" style="margin-right: 1ex;"></i>
+			Ups, da ist etwas schiefgelaufen!
+			Bitte versuch es noch einmal oder melde das Problem:
+			<p><b>{{ lastServerError }}</b></p>
+		</b-alert>
 	</div>
 	{% endraw %}
 </body>

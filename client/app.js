@@ -10,6 +10,9 @@ var app = new Vue({
 		currentUser: null,
 		userFilter: '',
 		userTimeout : null,
+		connected: socket.connected,
+		showErrorAlert: false,
+		lastServerError: ''
 	},
 	computed: {
 		filteredUsers: function () {
@@ -41,6 +44,10 @@ var app = new Vue({
 		new_user: () => { /* TODO */ },
 		deselect_user: function () { this.current_user = null; },
 		buy: function (product) {
+			if (!app.connected) {
+				console.log("Verzögerter Einkauf verhindert.")
+				return;
+			}
 			if (!app.currentUser) {
 				console.log("Kein Nutzer ausgewählt!")
 				return;
@@ -49,11 +56,21 @@ var app = new Vue({
 				if (ret.success) {
 					this.$refs['product' + product.id][0].add_popup();
 				} else {
-					console.log("damn!");
+					console.log('Damn!')
+					this.lastServerError = ret.message;
+					this.showErrorAlert = true;
 				}
 			});
 		}
 	}
+});
+
+socket.on('connect', () => app.connected = true);
+socket.on('reconnect', () => app.connected = true);
+socket.on('disconnect', reason => {
+	app.connected = false;
+	if (reason === 'io server disconnect') // no automatic reconnect
+		socket.connect();
 });
 
 socket.on('user changed', user => {
