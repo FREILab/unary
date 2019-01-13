@@ -34,12 +34,15 @@ var app = new Vue({
 	},
 	methods: {
 		format_money: value => Number.parseFloat(value).toFixed(2),
-		select_user: function (user) {
-			this.currentUser = user
-			// add/update a simple timeout
+		update_timeout: function () {
+			// add/update a simple timeout that returns to user selection
 			if (this.userTimeout)
 				clearTimeout(this.userTimeout);
-			// disabled for debugging: this.userTimeout = setTimeout(() => { this.deselect_user(); }, 60000)
+			this.userTimeout = setTimeout(() => { this.deselect_user(); }, 60000)
+		},
+		select_user: function (user) {
+			this.currentUser = user;
+			this.update_timeout();
 		},
 		new_user: () => { /* TODO */ },
 		deselect_user: function () { this.current_user = null; },
@@ -61,6 +64,7 @@ var app = new Vue({
 					this.showErrorAlert = true;
 				}
 			});
+			this.update_timeout();
 		}
 	}
 });
