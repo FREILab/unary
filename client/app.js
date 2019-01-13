@@ -47,6 +47,7 @@ var app = new Vue({
 			}
 			socket.emit('purchase', {uid: app.currentUser.id, pid: product.id}, ret => {
 				if (ret.success) {
+					this.$refs['product' + product.id][0].add_popup();
 				} else {
 					console.log("damn!");
 				}
