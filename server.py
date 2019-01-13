@@ -15,11 +15,11 @@ def assets():
 			'tweenjs/Tween', 'lib/vue-animated-number',
 			'lib/vue-product', 'lib/vue-user',
 			'socket.io/socket.io',
-			'fontawesome/fontawesome-all.min',
+			'fontawesome/all.min',
 		],
 		'css': [
 			'app', 'bootstrap-vue/bootstrap-vue.min',
-			'fontawesome/fa-svg-with-js'
+			'fontawesome/svg-with-js'
 		]
 	}
 
@@ -45,7 +45,7 @@ def purchase(json):
 			return {'success': False, 'message': 'Produkt ungültig!'}
 	else:
 		product = None # for deposits, basically
-	
+
 	# perform purchase
 	transaction = m.Transaction(user=user, product=product, amount=product.prize)
 	user.balance -= product.prize
