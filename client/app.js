@@ -45,7 +45,13 @@ var app = new Vue({
 			this.update_timeout();
 		},
 		new_user: () => { /* TODO */ },
-		deselect_user: function () { this.current_user = null; },
+		deselect_user: function () {
+			// ensure there are no leftovers
+			for (let i of this.$refs['product']) {
+				i.clear_popups();
+			}
+			this.currentUser = null;
+		},
 		buy: function (product) {
 			if (!app.connected) {
 				console.log("Verzögerter Einkauf verhindert.")
@@ -57,7 +63,7 @@ var app = new Vue({
 			}
 			socket.emit('purchase', {uid: app.currentUser.id, pid: product.id}, ret => {
 				if (ret.success) {
-					this.$refs['product' + product.id][0].add_popup();
+					this.$refs.product.find(c => c.product.id === product.id).add_popup();
 				} else {
 					console.log('Damn!')
 					this.lastServerError = ret.message;

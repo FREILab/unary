@@ -45,6 +45,7 @@ Vue.component('product', {
 	},
 	methods: {
 		format_money: value => Number.parseFloat(value).toFixed(2),
+		clear_popups: function () { this.numPopup = 0; },
 		add_popup: function () {
 			this.numPopup++;
 			let that = this;
