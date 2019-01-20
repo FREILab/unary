@@ -52,26 +52,41 @@ var app = new Vue({
 			}
 			this.currentUser = null;
 		},
-		buy: function (product) {
-			if (!app.connected) {
-				console.log("Verzögerter Einkauf verhindert.")
-				return;
-			}
-			if (!app.currentUser) {
-				console.log("Kein Nutzer ausgewählt!")
-				return;
-			}
-			socket.emit('purchase', {uid: app.currentUser.id, pid: product.id}, ret => {
-				if (ret.success) {
-					this.$refs.product.find(c => c.product.id === product.id).add_popup();
-				} else {
-					console.log('Damn!')
-					this.lastServerError = ret.message;
-					this.showErrorAlert = true;
+		transaction: function(parameters) {
+			this.update_timeout(); // honor user action
+			return new Promise((resolve, reject) => {
+				if (!app.connected) {
+					reject("Verzögerte Transaktion verhindert.");
+					return;
 				}
-			});
-			this.update_timeout();
-		}
+				if (!app.currentUser) {
+					reject("Kein Nutzer ausgewählt!");
+					return;
+				}
+				socket.emit('purchase', {uid: this.currentUser.id, ...parameters}, ret => {
+					if (ret.success) {
+						resolve(ret);
+					} else {
+						this.lastServerError = ret.message;
+						this.showErrorAlert = true;
+						reject(ret.message);
+					}
+				});
+			}).catch((msg) => console.warn('Transaktionsfehler: ' + msg));
+		},
+		buy: function (product) {
+			this.transaction({pid: product.id}).then(
+				() => this.$refs.product.find(c => c.product.id === product.id).add_popup()
+			);
+		},
+		deposit: function (amount) {
+			this.transaction({amount: -amount}).then(
+				() => this.$refs.deposit.close() // TODO: provide explicit positive feedback
+			);
+		},
+		revert: function (transaction) {
+			// TODO
+		},
 	}
 });
 

@@ -13,7 +13,7 @@ def assets():
 			'jquery/jquery.slim.min', 'popper/popper.min', 'bootstrap/bootstrap.min',
 			'vue/vue', 'bootstrap-vue/bootstrap-vue.min',
 			'tweenjs/Tween', 'lib/vue-animated-number',
-			'lib/vue-product', 'lib/vue-user',
+			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit',
 			'socket.io/socket.io',
 			'fontawesome/all.min',
 		],

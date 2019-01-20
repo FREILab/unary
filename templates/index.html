@@ -37,6 +37,18 @@
 							<animated-number :value="currentUser.balance" :decimals=2></animated-number>
 						</strong>
 					</b-navbar-brand>
+					 <b-navbar-nav>
+					 <b-button-group>
+						<b-button v-b-modal.history variant="secondary">
+							<i class="fas fa-history"></i>
+							Bisherige Transaktionen
+						</b-button>
+						<b-button v-b-modal.deposit variant="success">
+							<i class="fas fa-box"></i>
+							Geld einzahlen
+						</b-button>
+					</b-button-group>
+					</b-navbar-nav>
 				</template>
 				<template v-else>
 					<b-navbar-brand>
@@ -145,6 +157,9 @@
 			Bitte versuch es noch einmal oder melde das Problem:
 			<p><b>{{ lastServerError }}</b></p>
 		</b-alert>
+
+		<history v-if="currentUser" :user="currentUser" @revert="revert"></history>
+		<deposit v-if="currentUser" :user="currentUser" ref="deposit" @deposit="deposit"></deposit>
 	</div>
 	{% endraw %}
 </body>
