@@ -43,12 +43,16 @@ def purchase(json):
 		product = m.Product.query.get(json['pid'])
 		if product is None:
 			return {'success': False, 'message': 'Produkt ungültig!'}
+		amount=product.prize
 	else:
+		if not json['amount']:
+			return {'success': False, 'message': 'Weder Produkt, noch Betrag angegeben!'}
 		product = None # for deposits, basically
+		amount=json['amount']
 
 	# perform purchase
-	transaction = m.Transaction(user=user, product=product, amount=product.prize)
-	user.balance -= product.prize
+	transaction = m.Transaction(user=user, product=product, amount=amount)
+	user.balance -= amount
 	db.session.add(transaction)
 	try:
 		db.session.commit()
