@@ -3,12 +3,12 @@ let uid = 0; // unique id for each product component
 Vue.component('product', {
 	template: `
 	<b-card
-		:header="product.name" header-tag="h5"
 		:img-src="'static/img/products/' + product.picture"
-		img-top img-fluid
+		overlay
 		body-class="d-flex flex-column"
 	>
-		<div>
+		<h5 class="card-text"><b>{{ product.name }}</b></h5>
+		<p class="card-text">
 			<strong>{{ product.size }}</strong>
 			<span v-if="product.isOrganic">
 				<i class="text-success fas fa-leaf"></i>
@@ -16,7 +16,7 @@ Vue.component('product', {
 			<span v-if="product.description">
 				/ <span v-html="product.description"></span>
 			</span>
-		</div>
+		</p>
 		<b-button @click="$emit('order')"
 			:id="buttonId"
 			class="buy mt-auto" block size="lg" variant="outline-success"
