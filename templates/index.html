@@ -51,7 +51,7 @@
 						<h1>Was möchtest du?</h1>
 					</b-col>
 					<b-col cols="3">
-						<b-button v-on:click="deselect_user"
+						<b-button @click="deselect_user"
 							variant="primary" block size="lg"
 							class="done"
 						>
@@ -67,12 +67,13 @@
 						v-for="p in products.slice((i-1)*5, i*5)"
 						:key="p.id"
 						ref="product"
-						:product="p" v-on:order="buy(p)"
+						:product="p" @order="buy(p)"
 						class="product" style="max-width: 18%"
 					></product>
 				</b-card-group>
 			</b-container>
 		</div>
+
 		<div key="users" v-show="currentUser == null" class="w-100">
 			<b-navbar variant="dark" type="dark">
 				<b-navbar-brand>Zum Wohl!</b-navbar-brand>
@@ -92,7 +93,7 @@
 						></b-form-input>
 					</b-col>
 					<b-col offset="1" cols="2">
-						<b-button v-on:click="new_user"
+						<b-button @click="new_user"
 							variant="success" block size="lg"
 						>
 							Ich bin neu
@@ -104,14 +105,14 @@
 						<b-col v-for="u in favoriteUsers" :key="u.id"
 							sm="6" md="4" lg="3" xl="2"
 							class="user">
-							<user :user="u" v-on:select="select_user(u)"
+							<user :user="u" @select="select_user(u)"
 								border-variant="primary"
 							></user>
 						</b-col>
 						<b-col v-if="guestUser"
 							sm="6" md="4" lg="3" xl="2"
 							class="user ml-auto">
-							<user :user="guestUser" v-on:select="select_user(guestUser)"
+							<user :user="guestUser" @select="select_user(guestUser)"
 								bg-variant="warning"
 							></user>
 						</b-col>
@@ -122,13 +123,14 @@
 					<b-col v-for="u in filteredUsers" :key="u.id"
 						sm="6" md="4" lg="3" xl="2"
 						class="mb-4 user">
-						<user :user="u" v-on:select="select_user(u)"
+						<user :user="u" @select="select_user(u)"
 						></user>
 					</b-col>
 				</b-row>
 			</b-container>
 		</div>
 		</transition-group>
+
 		<b-alert variant="danger" fade
 			:show="!connected"
 		>

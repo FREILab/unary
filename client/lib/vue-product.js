@@ -17,7 +17,7 @@ Vue.component('product', {
 				/ <span v-html="product.description"></span>
 			</span>
 		</div>
-		<b-button v-on:click="$emit('order')"
+		<b-button @click="$emit('order')"
 			:id="buttonId"
 			class="buy mt-auto" block size="lg" variant="outline-success"
 		>
@@ -25,7 +25,7 @@ Vue.component('product', {
 		</b-button>
 		<b-popover
 			v-for="n in numPopup" :key="n"
-			:target="buttonId" :show="true" triggers=""
+			:target="buttonId" show triggers=""
 			:placement="['right', 'bottom', 'left', 'top'][(n-1) % 4]" :offset="((n-1)/4)*10"
 			:content="(n == 1 ? 'Gekauft!' : 'Nochmal gekauft!')">
 		</b-popover>
