@@ -37,17 +37,19 @@
 							<animated-number :value="currentUser.balance" :decimals=2></animated-number>
 						</strong>
 					</b-navbar-brand>
-					 <b-navbar-nav>
-					 <b-button-group>
-						<b-button v-b-modal.history variant="secondary">
-							<i class="fas fa-history"></i>
-							Bisherige Transaktionen
-						</b-button>
-						<b-button v-b-modal.deposit variant="success">
-							<i class="fas fa-box"></i>
-							Geld einzahlen
-						</b-button>
-					</b-button-group>
+					<b-navbar-nav>
+						<b-button-group>
+							<b-button v-b-modal.history @click="fetch_transactions()"
+								variant="secondary"
+							>
+								<i class="fas fa-history"></i>
+								Letzte Transaktionen
+							</b-button>
+							<b-button v-b-modal.deposit variant="success">
+								<i class="fas fa-box"></i>
+								Geld einzahlen
+							</b-button>
+						</b-button-group>
 					</b-navbar-nav>
 				</template>
 				<template v-else>
@@ -55,6 +57,14 @@
 						Getränkeabgabe auf <strong class="bg-danger">freiwilliger Spendenbasis</strong>.
 						<small>Abgabe nur an Gäste — Vereinsmitglieder bitte eigenes Konto anlegen!</small>
 					</b-navbar-brand>
+					<b-navbar-nav>
+						<b-button v-b-modal.history @click="fetch_transactions()"
+							variant="secondary"
+						>
+							<i class="fas fa-history"></i>
+							Letzte Transaktionen
+						</b-button>
+					</b-navbar-nav>
 				</template>
 			</b-navbar>
 			<b-container fluid>
