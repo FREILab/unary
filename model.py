@@ -6,14 +6,16 @@ from init import db
 class ExportableMixin(object):
 	# list of exportable attribute names
 	_exportable_ = None
-	
+
 	def _fill_exportable_(self):
 		# all db columns
 		columns = [c.key for c in sqlinspect(self).attrs]
 		# all dynamic properties
 		properties = [k[0] for k in inspect.getmembers(self.__class__, lambda o: isinstance(o, property))]
-		self._exportable_ = [i for i in columns + properties if i not in self.export_blacklist]
-	
+		# minus blacklist
+		blacklist = getattr(self, 'export_blacklist', [])
+		self._exportable_ = [i for i in columns + properties if i not in blacklist]
+
 	# provide a _clean_ (ie, insensitive) collection of attributes
 	def export(self):
 		if self._exportable_ is None:
@@ -37,7 +39,7 @@ class User(ExportableMixin, db.Model):
 
 	transactions = db.relationship('Transaction', backref='user',
 		order_by=lambda: Transaction.date.desc())
-	
+
 	export_blacklist = ['fullname', 'transactions']
 
 	@property
@@ -60,19 +62,19 @@ class Product(ExportableMixin, db.Model):
 	isOrganic = db.Column(db.Boolean, default=False, nullable=False)
 
 	transactions = db.relationship('Transaction', backref='product')
-	
+
 	export_blacklist = ['transactions']
 
 	def __repr__(self):
 		return '<Product {}>'.format(self.name)
 
-class Transaction(db.Model):
+class Transaction(ExportableMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 	amount = db.Column(db.Float, nullable=False)
 	date = db.Column(db.DateTime, default=db.func.now())
-	
+
 	def __repr__(self):
 		if (self.product_id):
 			return '<Transaction: P{} by U{} for € {}>'.format(self.product_id, self.user_id, self.amount)
