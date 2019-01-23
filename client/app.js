@@ -46,11 +46,10 @@ var app = new Vue({
 		},
 		new_user: () => { /* TODO */ },
 		deselect_user: function () {
-			// ensure there are no leftovers
-			for (let i of this.$refs['product']) {
-				i.clear_popups();
-			}
 			this.currentUser = null;
+			// ensure there are no leftover popups
+			if ('products' in this.$refs)
+				this.$refs['product'].forEach((p) => p.clear_popups());
 		},
 		transaction: function(parameters) {
 			this.update_timeout(); // honor user action
