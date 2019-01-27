@@ -17,11 +17,12 @@ class ExportableMixin(object):
 		self._exportable_ = [i for i in columns + properties if i not in blacklist]
 
 	# provide a _clean_ (ie, insensitive) collection of attributes
-	def export(self):
+	def export(self, omit=()):
 		if self._exportable_ is None:
 			self._fill_exportable_()
 		ret = {}
 		for name in self._exportable_:
+			if name in omit: continue
 			attr = getattr(self, name)
 			if isinstance(attr, ExportableMixin):
 				attr = attr.export()
@@ -74,6 +75,8 @@ class Transaction(ExportableMixin, db.Model):
 	product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 	amount = db.Column(db.Float, nullable=False)
 	date = db.Column(db.DateTime, default=db.func.now())
+	cancelled = db.Column(db.Boolean, default=False, nullable=False)
+	fulfilled = db.Column(db.Boolean, default=False, nullable=False)
 
 	def __repr__(self):
 		if (self.product_id):

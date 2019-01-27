@@ -1,4 +1,4 @@
-// custom font
+/* custom font */
 @font-face {
 	font-family: "tstar";
 	font-weight: normal;
@@ -22,18 +22,21 @@
 	src: url('tstar-bolditalic-webfont.woff2') format('woff2');
 }
 
-// Bootstrap variable overrides
+/* Bootstrap variable overrides */
 $font-family-sans-serif:	tstar;
 
-// Bootstrap and its default variables
+/* Bootstrap and its default variables */
 @import "node_modules/bootstrap/scss/bootstrap";
 
-// custom elements
+/* custom elements */
+
+// common buttons in the interface
 button.buy, button.done {
 	font-size: 1.5rem;
 }
 
-.product {
+// a product card in grid
+.card.product {
 	min-height: 100%;
 	& .card-body {
 		padding-top: .75rem; // reduced padding
@@ -47,6 +50,23 @@ button.buy, button.done {
 		text-shadow: 2px 2px 6px white, -2px -2px 6px white;
 	}
 	& button { background: rgba(255, 255, 255, 0.85); }
+}
+
+// a cancelled transaction
+tr.cancelled {
+	text-decoration: line-through wavy theme-color("danger");
+	& td {
+		background: none !important;
+		color: inherit !important;
+	}
+}
+
+// a table cell to contain a button
+td.button {
+	// reduce padding so the button fits
+	padding-top: 0.3rem; // like table-sm
+	padding-bottom: 0.3rem;
+	vertical-align: middle;
 }
 
 // our animation

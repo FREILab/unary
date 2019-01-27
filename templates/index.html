@@ -39,9 +39,7 @@
 					</b-navbar-brand>
 					<b-navbar-nav>
 						<b-button-group>
-							<b-button v-b-modal.history @click="fetch_transactions()"
-								variant="secondary"
-							>
+							<b-button v-b-modal.history variant="secondary">
 								<i class="fas fa-history"></i>
 								Letzte Transaktionen
 							</b-button>
@@ -168,7 +166,9 @@
 			<p><b>{{ lastServerError }}</b></p>
 		</b-alert>
 
-		<history v-if="currentUser" :user="currentUser" @revert="revert"></history>
+		<history v-if="currentUser" :user="currentUser" ref="history"
+			@refresh="fetch_transactions" @revert="revert">
+		</history>
 		<deposit v-if="currentUser" :user="currentUser" ref="deposit" @deposit="deposit"></deposit>
 	</div>
 	{% endraw %}

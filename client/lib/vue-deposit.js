@@ -2,7 +2,7 @@ Vue.component('deposit', {
 	template: `
 	<b-modal ref="modal" :id="domId" hide-footer size="lg" centered
 		header-bg-variant="success" header-text-variant="light"
-		:title="'Geld einzahlen (' + user.username + ')'"
+		:title="format_title('Geld einzahlen', user)"
 		@show="amount = 0"
 	>
 		<p>Bitte entscheide dich für den Betrag, den du einzahlen möchtest,
@@ -49,6 +49,8 @@ Vue.component('deposit', {
 	},
 	methods: {
 		format_money: value => Number.parseFloat(value).toFixed(2),
+		format_title: function (text, user) {
+			return `${text} (${user.username}, Guthaben € ${this.format_money(user.balance)})`},
 		close: function () { this.$refs.modal.hide(); }
 	}
 });

@@ -51,18 +51,28 @@ var app = new Vue({
 			if ('products' in this.$refs)
 				this.$refs['product'].forEach((p) => p.clear_popups());
 		},
-		transaction: function(parameters) {
+		fetch_transactions: function () {
+			socket.emit('transactions', {uid: this.currentUser.id}, ret => {
+				if (ret.success) {
+					this.$refs.history.update(ret.today, ret.month);
+				} else {
+					this.lastServerError = ret.message;
+					this.showErrorAlert = true;
+				}
+			});
+		},
+		transact: function (task, parameters) {
 			this.update_timeout(); // honor user action
 			return new Promise((resolve, reject) => {
-				if (!app.connected) {
+				if (!this.connected) {
 					reject("Verzögerte Transaktion verhindert.");
 					return;
 				}
-				if (!app.currentUser) {
+				if (!this.currentUser) {
 					reject("Kein Nutzer ausgewählt!");
 					return;
 				}
-				socket.emit('purchase', {uid: this.currentUser.id, ...parameters}, ret => {
+				socket.emit(task, {uid: this.currentUser.id, ...parameters}, ret => {
 					if (ret.success) {
 						resolve(ret);
 					} else {
@@ -74,17 +84,20 @@ var app = new Vue({
 			}).catch((msg) => console.warn('Transaktionsfehler: ' + msg));
 		},
 		buy: function (product) {
-			this.transaction({pid: product.id}).then(
+			this.transact('purchase', {pid: product.id}).then(
 				() => this.$refs.product.find(c => c.product.id === product.id).add_popup()
 			);
 		},
 		deposit: function (amount) {
-			this.transaction({amount: -amount}).then(
+			this.transact('purchase', {amount: -amount}).then(
 				() => this.$refs.deposit.close() // TODO: provide explicit positive feedback
 			);
 		},
-		revert: function (transaction) {
-			// TODO
+		revert: function (tid) {
+			this.transact('revert', {tid: tid}).then(
+				() => this.fetch_transactions() // sync current state regarding transactions
+				// note: we do not follow our philosophy of push notifications as it is a tailored list
+			);
 		},
 	}
 });
