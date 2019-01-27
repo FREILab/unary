@@ -3,7 +3,7 @@ Vue.component('deposit', {
 	<b-modal ref="modal" :id="domId" hide-footer size="lg" centered
 		header-bg-variant="success" header-text-variant="light"
 		:title="format_title('Geld einzahlen', user)"
-		@show="amount = 0"
+		@show="amount = '0'"
 	>
 		<p>Bitte entscheide dich für den Betrag, den du einzahlen möchtest,
 		und werfe diesen in die Spendekasse auf dem Tresen.</p>
@@ -11,7 +11,7 @@ Vue.component('deposit', {
 		<p>Bestätige dann, wieviel Geld in die Kasse gelegt hast:</p>
 
 		<b-row class="my-4">
-			<b-col v-for="a in [5, 10, 20, 30, 50]" :key="a">
+			<b-col v-for="a in ['5', '10', '20', '30', '50']" :key="a">
 				<b-button @click="amount = a"
 					variant="warning" block size="lg"
 				>
@@ -44,7 +44,7 @@ Vue.component('deposit', {
 	},
 	data: function () {
 		return {
-			amount: 0
+			amount: '0'
 		};
 	},
 	methods: {
