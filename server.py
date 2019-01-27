@@ -26,9 +26,11 @@ def assets():
 
 # retrieve initial full data needed by client
 def payload():
+	products = m.Product.query.filter_by(enabled=True).order_by('name')
+	users = m.User.query.filter_by(enabled=True).order_by('username')
 	return {
-		'products': [p.export() for p in m.Product.query.order_by('name').all()],
-		'users' : [u.export() for u in m.User.query.order_by('username').all()]
+		'products': [p.export() for p in products.all()],
+		'users' : [u.export() for u in users.all()]
 	}
 
 # build failure json response (convenience)

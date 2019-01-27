@@ -31,6 +31,7 @@ class ExportableMixin(object):
 
 class User(ExportableMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
+	enabled = db.Column(db.Boolean, default=True, nullable=False)
 	username = db.Column(db.String(80), unique=True, nullable=False)
 	fullname = db.Column(db.String(80), nullable=False)
 	color = db.Column(db.String(20), default='black', nullable=False)
