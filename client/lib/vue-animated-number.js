@@ -28,6 +28,9 @@ Vue.component('animated-number', {
     this.tween(0, this.value)
   },
   methods: {
+	dynamicDuration: function (distance) {
+		return this.duration * Math.log(Math.abs(distance) + 1);
+	},
     tween: function (startValue, endValue) {
       var vm = this
       function animate () {
@@ -37,7 +40,7 @@ Vue.component('animated-number', {
       }
 
       new TWEEN.Tween({ tweeningValue: startValue })
-        .to({ tweeningValue: endValue }, this.duration)
+        .to({ tweeningValue: endValue }, this.dynamicDuration(endValue - startValue))
         .onUpdate(function () {
           vm.tweeningValue = this.tweeningValue.toFixed(vm.decimals)
         })
