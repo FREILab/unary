@@ -26,7 +26,7 @@
 	<div id='app' v-cloak>
 		<transition-group name="slide" class="slide" tag="div">
 		<div key="products" v-if="currentUser" class="w-100">
-			<b-navbar :style="{ backgroundColor: currentUser.color }" type="dark">
+			<b-navbar :style="{ backgroundColor: currentUser.color }" type="dark" :toggleable="true">
 				<template v-if="currentUser != guestUser">
 					<b-navbar-brand>Hallo, {{ currentUser.username }}!</b-navbar-brand>
 					<b-navbar-brand>
@@ -95,7 +95,7 @@
 		</div>
 
 		<div key="users" v-show="currentUser == null" class="w-100">
-			<b-navbar variant="dark" type="dark">
+			<b-navbar variant="dark" type="dark" :toggleable="true">
 				<b-navbar-brand>Zum Wohl!</b-navbar-brand>
 				<b-nav-text class="text-light">
 					Getränkeabrechnung im Freilab
