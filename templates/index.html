@@ -30,12 +30,7 @@
 				<template v-if="currentUser != guestUser">
 					<b-navbar-brand>Hallo, {{ currentUser.username }}!</b-navbar-brand>
 					<b-navbar-brand>
-						Dein Guthaben: €
-						<strong
-							:class="{'bg-danger': currentUser.balance<0, 'text-warning': currentUser.balance<5 && currentUser.balance>=0}"
-						>
-							<animated-number :value="currentUser.balance" :decimals=2></animated-number>
-						</strong>
+						Dein Guthaben: <balance :user="currentUser"></balance>
 					</b-navbar-brand>
 					<b-navbar-nav>
 						<b-button-group>

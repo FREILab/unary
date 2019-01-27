@@ -2,9 +2,12 @@ Vue.component('history', {
 	template: `
 	<b-modal :id="domId" hide-footer size="lg" centered
 		header-bg-variant="dark" header-text-variant="light"
-		:title="format_title('Letzte Transaktionen', user)"
 		@show="refresh"
 	>
+		<template slot="modal-title">
+			Letzte Transaktionen
+			(<strong>{{user.username}}</strong>, Guthaben <balance :user="user"></balance>)
+		</template>
 		<template v-if="transToday.length">
 			<p>Falls du einen Fehler gemacht hast, kannst du Transaktionen von heute hier revidieren.</p>
 			<h4>Heute:</h4>
@@ -78,8 +81,6 @@ Vue.component('history', {
 		style_money: value => 'text-light font-weight-bold ' + (value > 0 ? 'bg-danger' : 'bg-success'),
 		format_date: date => new Intl.DateTimeFormat(
 			'de-DE', {hour: 'numeric', minute: 'numeric'}).format(Date.parse(date)),
-		format_title: function (text, user) {
-			return `${text} (${user.username}, Guthaben € ${this.format_money(user.balance)})`},
 		style_row: item => (item.cancelled ? 'cancelled' : ''),
 		refresh: function () {
 			this.transToday = [];
