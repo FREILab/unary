@@ -29,7 +29,7 @@ Vue.component('deposit-modal', {
 				size="lg"
 			></b-form-input>
 			<b-button type="submit"
-				:disabled="!amount"
+				:disabled="amount == '0'"
 				variant="danger" class="ml-auto" size="lg"
 			>
 				Einzahlung bestätigen
