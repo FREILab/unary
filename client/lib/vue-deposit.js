@@ -22,13 +22,13 @@ Vue.component('deposit-modal', {
 				</b-button>
 			</b-col>
 		</b-row>
-		<b-form inline centered>
+		<b-form inline centered @submit="form_submit">
 			<label :for="domId + '-amount'" size="lg" class="mr-2">Betrag in €</label>
 			<b-form-input :id="domId + '-amount'"
 				type="number" v-model="amount" required min="0" max="100" step="any" style="width: 5em;"
 				size="lg"
 			></b-form-input>
-			<b-button @click="$emit('deposit', amount)"
+			<b-button type="submit"
 				:disabled="!amount"
 				variant="danger" class="ml-auto" size="lg"
 			>
@@ -52,6 +52,10 @@ Vue.component('deposit-modal', {
 	},
 	methods: {
 		format_money: value => Number.parseFloat(value).toFixed(2),
+		form_submit: function (e) {
+			e.preventDefault();
+			this.$emit('deposit', this.amount);
+		},
 		close: function () { this.$refs.modal.hide(); }
 	}
 });
