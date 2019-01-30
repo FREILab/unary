@@ -126,3 +126,5 @@ def add_stamp(endpoint, values):
 	#r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
 	#return r
 
+if __name__ == '__main__':
+	socketio.run(app)
