@@ -30,7 +30,7 @@
 				<template v-if="currentUser != guestUser">
 					<b-navbar-brand>Hallo, {{ currentUser.username }}!</b-navbar-brand>
 					<b-navbar-brand>
-						Dein Guthaben: <balance :user="currentUser"></balance>
+						Dein Guthaben: <balance-text :user="currentUser"></balance-text>
 					</b-navbar-brand>
 					<b-navbar-nav>
 						<b-button-group>
@@ -78,13 +78,13 @@
 					v-for="i in Math.ceil(products.length / 5)" :key="i"
 					deck class="mb-4"
 				>
-					<product 
+					<product-card
 						v-for="p in products.slice((i-1)*5, i*5)"
 						:key="p.id"
 						ref="product"
 						:product="p" @order="buy(p)"
 						class="product" style="max-width: 18%"
-					></product>
+					></product-card>
 				</b-card-group>
 			</b-container>
 		</div>
@@ -120,16 +120,16 @@
 						<b-col v-for="u in favoriteUsers" :key="u.id"
 							sm="6" md="4" lg="3" xl="2"
 							class="user">
-							<user :user="u" @select="select_user(u)"
+							<user-card :user="u" @select="select_user(u)"
 								border-variant="primary"
-							></user>
+							></user-card>
 						</b-col>
 						<b-col v-if="guestUser"
 							sm="6" md="4" lg="3" xl="2"
 							class="user ml-auto">
-							<user :user="guestUser" @select="select_user(guestUser)"
+							<user-card :user="guestUser" @select="select_user(guestUser)"
 								bg-variant="warning"
-							></user>
+							></user-card>
 						</b-col>
 					</b-row>
 				</b-collapse>
@@ -138,8 +138,8 @@
 					<b-col v-for="u in filteredUsers" :key="u.id"
 						sm="6" md="4" lg="3" xl="2"
 						class="mb-4 user">
-						<user :user="u" @select="select_user(u)"
-						></user>
+						<user-card :user="u" @select="select_user(u)"
+						></user-card>
 					</b-col>
 				</b-row>
 			</b-container>
@@ -161,10 +161,10 @@
 			<p><b>{{ lastServerError }}</b></p>
 		</b-alert>
 
-		<history v-if="currentUser" :user="currentUser" ref="history"
+		<history-modal v-if="currentUser" :user="currentUser" ref="history"
 			@refresh="fetch_transactions" @revert="revert">
-		</history>
-		<deposit v-if="currentUser" :user="currentUser" ref="deposit" @deposit="deposit"></deposit>
+		</history-modal>
+		<deposit-modal v-if="currentUser" :user="currentUser" ref="deposit" @deposit="deposit"></deposit-modal>
 	</div>
 	{% endraw %}
 </body>

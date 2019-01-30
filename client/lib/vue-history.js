@@ -1,4 +1,4 @@
-Vue.component('history', {
+Vue.component('history-modal', {
 	template: `
 	<b-modal :id="domId" hide-footer size="lg" centered
 		header-bg-variant="dark" header-text-variant="light"
@@ -6,7 +6,7 @@ Vue.component('history', {
 	>
 		<template slot="modal-title">
 			Letzte Transaktionen
-			(<strong>{{user.username}}</strong>, Guthaben <balance :user="user"></balance>)
+			(<strong>{{user.username}}</strong>, Guthaben <balance-text :user="user"></balance-text>)
 		</template>
 		<template v-if="transToday.length">
 			<p>Falls du einen Fehler gemacht hast, kannst du Transaktionen von heute hier revidieren.</p>

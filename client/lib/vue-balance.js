@@ -1,4 +1,4 @@
-Vue.component('balance', {
+Vue.component('balance-text', {
 	template: `
 	<span>€
 		<strong

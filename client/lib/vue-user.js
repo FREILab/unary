@@ -1,4 +1,4 @@
-Vue.component('user', {
+Vue.component('user-card', {
 	template: `
 	<b-link v-on:click="$emit('select')">
 		<b-card v-bind="$attrs" v-on="$listeners" body-class="text-center">

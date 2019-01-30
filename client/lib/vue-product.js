@@ -1,6 +1,6 @@
 let uid = 0; // unique id for each product component
 
-Vue.component('product', {
+Vue.component('product-card', {
 	template: `
 	<b-card
 		:img-src="'static/img/products/' + product.picture"

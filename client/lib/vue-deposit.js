@@ -1,4 +1,4 @@
-Vue.component('deposit', {
+Vue.component('deposit-modal', {
 	template: `
 	<b-modal ref="modal" :id="domId" hide-footer size="lg" centered
 		header-bg-variant="success" header-text-variant="light"
@@ -6,7 +6,7 @@ Vue.component('deposit', {
 	>
 		<template slot="modal-title">
 			Geld einzahlen
-			(<strong>{{user.username}}</strong>, Guthaben <balance :user="user"></balance>)
+			(<strong>{{user.username}}</strong>, Guthaben <balance-text :user="user"></balance-text>)
 		</template>
 		<p>Bitte entscheide dich für den Betrag, den du einzahlen möchtest,
 		und werfe diesen in die Spendekasse auf dem Tresen.</p>
