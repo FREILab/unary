@@ -23,9 +23,11 @@
 	</noscript>
 	{% raw %}
 	<style>[v-cloak] { display: none; }</style>
-	<div id='app' v-cloak>
+	<div id="app" ref="app" v-cloak>
 		<transition-group name="slide" class="slide" tag="div">
-		<div key="products" v-if="currentUser" class="w-100">
+		
+		<!-- PRODUCT VIEW -->
+		<div key="products" v-if="currentUser" class="w-100 fullscreen">
 			<b-navbar :style="{ backgroundColor: currentUser.color }" type="dark" :toggleable="true">
 				<template v-if="currentUser != guestUser">
 					<b-navbar-brand>Hallo, {{ currentUser.username }}!</b-navbar-brand>
@@ -87,7 +89,8 @@
 			</b-container>
 		</div>
 
-		<div key="users" v-show="currentUser == null" class="w-100">
+		<!-- USER VIEW -->
+		<div key="users" v-show="currentUser == null" class="w-100 fullscreen">
 			<b-navbar variant="dark" type="dark" :toggleable="true">
 				<b-navbar-brand>Zum Wohl!</b-navbar-brand>
 				<b-nav-text class="text-light">
@@ -143,7 +146,15 @@
 			</b-container>
 		</div>
 		</transition-group>
-
+		<b-modal hide-footer hide-header size="lg" centered :visible="true" class="not-fullscreen">
+			<b-button @click="$refs.app.requestFullscreen();"
+				block size="lg" variant="outline-danger"
+			>
+				<i class="far fa-play-circle"></i>
+				Getränkeabrechnungssystem im Vollbild starten
+			</b-button>
+		</b-modal>
+		
 		<b-alert variant="danger" fade
 			:show="!connected"
 		>
