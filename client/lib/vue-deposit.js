@@ -1,6 +1,7 @@
 Vue.component('deposit-modal', {
 	template: `
-	<b-modal ref="modal" :id="domId" hide-footer size="lg" centered
+	<b-modal ref="modal" :id="domId"
+		hide-footer size="lg"
 		header-bg-variant="success" header-text-variant="light"
 		@show="amount = '0'"
 	>
