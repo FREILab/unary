@@ -26,7 +26,7 @@ Vue.component('product-card', {
 		</b-button>
 		<b-popover
 			v-for="n in numPopup" :key="n"
-			:target="buttonId" show triggers=""
+			:target="buttonId" container="#app" show triggers=""
 			:placement="['right', 'bottom', 'left', 'top'][(n-1) % 4]" :offset="((n-1)/4)*10"
 			:content="(n == 1 ? 'Gekauft!' : 'Nochmal gekauft!')">
 		</b-popover>
