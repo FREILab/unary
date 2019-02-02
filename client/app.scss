@@ -31,6 +31,7 @@ $font-family-sans-serif:	tstar;
 /* app root */
 #app {
 	&:fullscreen {
+		background: url('../img/background.png') white repeat fixed;
 		& .not-fullscreen { display: none; }
 	}
 	&:not(:fullscreen) .fullscreen { display: none; }
@@ -48,6 +49,8 @@ button.buy, button.done {
 	// behave like a link as we are clickable
 	@extend a;
 	cursor: pointer;
+	// have glass-effect background except for colored guest button
+	background: url('../img/background-glass.png') white repeat fixed;
 	&.guest { background: none; @extend .bg-warning; }
 }
 
