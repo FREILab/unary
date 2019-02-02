@@ -6,6 +6,7 @@ Vue.component('product-card', {
 		:img-src="'static/img/products/' + product.picture"
 		overlay
 		body-class="d-flex flex-column"
+		class="product"
 	>
 		<h5 class="card-text"><b>{{ product.name }}</b></h5>
 		<p class="card-text">

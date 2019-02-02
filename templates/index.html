@@ -83,7 +83,7 @@
 						:key="p.id"
 						ref="product"
 						:product="p" @order="buy(p)"
-						class="product" style="max-width: 18%"
+						style="max-width: 18%"
 					></product-card>
 				</b-card-group>
 			</b-container>
@@ -129,7 +129,7 @@
 							sm="6" md="4" lg="3" xl="2"
 							class="user ml-auto">
 							<user-card :user="guestUser" @select="select_user(guestUser)"
-								bg-variant="warning"
+								class="guest"
 							></user-card>
 						</b-col>
 					</b-row>

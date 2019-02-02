@@ -43,6 +43,14 @@ button.buy, button.done {
 	font-size: 1.5rem;
 }
 
+// a user card
+.card.user {
+	// behave like a link as we are clickable
+	@extend a;
+	cursor: pointer;
+	&.guest { background: none; @extend .bg-warning; }
+}
+
 // a product card in grid
 .card.product {
 	min-height: 100%;
