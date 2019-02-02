@@ -42,6 +42,9 @@ var app = new Vue({
 		},
 		select_user: function (user) {
 			this.currentUser = user;
+			// remove user filter (considered outdated)
+			this.userFilter = '';
+			// start deselection timeout
 			this.update_timeout();
 		},
 		new_user: () => { /* TODO */ },
