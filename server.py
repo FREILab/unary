@@ -104,7 +104,7 @@ def revert(json):
 	if transaction.date < startOfDay() or transaction.fulfilled:
 		return failure('Transaktion kann nicht mehr revidiert werden!')
 	if transaction.cancelled:
-		return failure('Transaktion wurde bereits revidiert!')
+		return {'success': True} # avoid error message on double taps
 
 	transaction.cancelled = True
 	transaction.user.balance += transaction.amount
