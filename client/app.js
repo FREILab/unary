@@ -4,6 +4,7 @@ var socket = io();
 
 var app = new Vue({
 	el: '#app',
+	mixins: [moneyMixin],
 	data: {
 		products: initial.products,
 		users: initial.users,
@@ -33,7 +34,6 @@ var app = new Vue({
 		}
 	},
 	methods: {
-		format_money: value => Number.parseFloat(value).toFixed(2),
 		update_timeout: function () {
 			// add/update a simple timeout that returns to user selection
 			if (this.userTimeout)

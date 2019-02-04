@@ -170,10 +170,13 @@
 			<p><b>{{ lastServerError }}</b></p>
 		</b-alert>
 
-		<history-modal v-if="currentUser" :user="currentUser" ref="history"
-			@refresh="fetch_transactions" @revert="revert">
+		<!-- MODALS – pre-render on startup (no v-if usage) -->
+		<history-modal dom-id="history" ref="history"
+			:user="currentUser" @refresh="fetch_transactions" @revert="revert">
 		</history-modal>
-		<deposit-modal v-if="currentUser" :user="currentUser" ref="deposit" @deposit="deposit"></deposit-modal>
+		<deposit-modal dom-id="deposit" ref="deposit"
+			:user="currentUser" @deposit="deposit">
+		</deposit-modal>
 	</div>
 	{% endraw %}
 </body>

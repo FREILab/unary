@@ -1,6 +1,7 @@
 let uid = 0; // unique id for each product component
 
 Vue.component('product-card', {
+	mixins: [moneyMixin],
 	template: `
 	<b-card
 		:img-src="'static/img/products/' + product.picture"
@@ -45,7 +46,6 @@ Vue.component('product-card', {
 		}
 	},
 	methods: {
-		format_money: value => Number.parseFloat(value).toFixed(2),
 		clear_popups: function () { this.numPopup = 0; },
 		add_popup: function () {
 			this.numPopup++;

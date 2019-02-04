@@ -1,13 +1,15 @@
 Vue.component('deposit-modal', {
+	mixins: [moneyMixin, modalMixin],
 	template: `
 	<b-modal ref="modal" :id="domId"
 		hide-footer size="lg"
 		header-bg-variant="success" header-text-variant="light"
-		@show="amount = '0'"
+		@show="onShow(); reset()" @hidden="onHide"
 	>
-		<template slot="modal-title">
+		<template slot="modal-title" v-if="user && visible">
 			Geld einzahlen
-			(<strong>{{user.username}}</strong>, Guthaben <balance-text :user="user"></balance-text>)
+			(<strong>{{user.username}}</strong>, Guthaben
+				<balance-text :user="user"></balance-text>)
 		</template>
 		<p>Bitte entscheide dich für den Betrag, den du einzahlen möchtest,
 		und werfe diesen in die Spendekasse auf dem Tresen.</p>
@@ -23,14 +25,14 @@ Vue.component('deposit-modal', {
 				</b-button>
 			</b-col>
 		</b-row>
-		<b-form inline centered @submit="form_submit">
+		<b-form inline centered @submit.prevent="form_submit">
 			<label :for="domId + '-amount'" size="lg" class="mr-2">Betrag in €</label>
 			<b-form-input :id="domId + '-amount'"
 				type="number" v-model="amount" required min="0" max="100" step="any" style="width: 5em;"
 				size="lg"
 			></b-form-input>
 			<b-button type="submit"
-				:disabled="amount == '0'"
+				:disabled="amount == '0' || triggered"
 				variant="danger" class="ml-auto" size="lg"
 			>
 				Einzahlung bestätigen
@@ -41,22 +43,23 @@ Vue.component('deposit-modal', {
 	props: {
 		user: {
 			required: true
-		},
-		domId: {
-			default: 'deposit'
 		}
 	},
 	data: function () {
 		return {
-			amount: '0'
+			amount: '0',
+			triggered: false // used to avoid double taps
 		};
 	},
 	methods: {
-		format_money: value => Number.parseFloat(value).toFixed(2),
-		form_submit: function (e) {
-			e.preventDefault();
+		form_submit: function () {
+			if (this.triggered)
+				return;
+			this.triggered = true;
 			this.$emit('deposit', this.amount);
 		},
-		close: function () { this.$refs.modal.hide(); }
+		reset: function () {
+			this.amount = '0'; this.triggered = false;
+		}
 	}
 });

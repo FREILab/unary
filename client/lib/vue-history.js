@@ -1,13 +1,15 @@
 Vue.component('history-modal', {
+	mixins: [moneyMixin, modalMixin],
 	template: `
 	<b-modal :id="domId"
 		hide-footer size="lg"
 		header-bg-variant="dark" header-text-variant="light"
-		@show="refresh"
+		@show="onShow(); reset()"
 	>
-		<template slot="modal-title">
+		<template slot="modal-title" v-if="user && visible">
 			Letzte Transaktionen
-			(<strong>{{user.username}}</strong>, Guthaben <balance-text :user="user"></balance-text>)
+			(<strong>{{user.username}}</strong>, Guthaben
+				<balance-text :user="user"></balance-text>)
 		</template>
 		<template v-if="transToday.length">
 			<p>Falls du einen Fehler gemacht hast, kannst du Transaktionen von heute hier revidieren.</p>
@@ -52,9 +54,6 @@ Vue.component('history-modal', {
 	props: {
 		user: {
 			required: true
-		},
-		domId: {
-			default: 'history'
 		}
 	},
 	data: function () {
@@ -78,12 +77,11 @@ Vue.component('history-modal', {
 	methods: {
 		format_product: p => (p ? p.name : 'Einzahlung'),
 		style_product: p => (p ? '' : 'font-italic'),
-		format_money: value => Math.abs(Number.parseFloat(value)).toFixed(2),
 		style_money: value => 'text-light font-weight-bold ' + (value > 0 ? 'bg-danger' : 'bg-success'),
 		format_date: date => new Intl.DateTimeFormat(
 			'de-DE', {hour: 'numeric', minute: 'numeric'}).format(Date.parse(date)),
 		style_row: item => (item.cancelled ? 'cancelled' : ''),
-		refresh: function () {
+		reset: function () {
 			this.transToday = [];
 			this.transMonth = [];
 			this.$emit('refresh');
