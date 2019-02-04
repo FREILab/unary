@@ -56,17 +56,21 @@ def transactions(json):
 	daily = m.Transaction.query.filter_by(user_id=json['uid']) \
 		.filter(m.Transaction.date >= today) \
 		.order_by(m.Transaction.date.desc())
-	# get longer backlog, but this time fuzzed out (we remove date info)
-	monthly = m.Transaction.query.filter_by(user_id=json['uid']) \
-		.filter(m.Transaction.date < today) \
-		.filter(m.Transaction.date > today - timedelta(days=28)) \
-		.order_by(m.Transaction.date.desc())
 
-	return {
+	ret = {
 		'success': True,
 		'today': [t.export(omit=('user')) for t in daily.all()],
-		'month': [t.export(omit=('user', 'date')) for t in monthly.all()]
 	}
+
+	if not json.get('short', False):
+		# get longer backlog, but this time fuzzed out (we remove date info)
+		monthly = m.Transaction.query.filter_by(user_id=json['uid']) \
+			.filter(m.Transaction.date < today) \
+			.filter(m.Transaction.date > today - timedelta(days=28)) \
+			.order_by(m.Transaction.date.desc())
+		ret['month'] = [t.export(omit=('user', 'date')) for t in monthly.all()]
+
+	return ret
 
 @socketio.on('purchase')
 def purchase(json):
@@ -79,7 +83,7 @@ def purchase(json):
 			return failure('Produkt ungültig!')
 		amount=product.prize
 	else:
-		if not json['amount']:
+		if not json.get('amount', None):
 			return failure('Weder Produkt, noch Betrag angegeben!')
 		product = None # for deposits, basically
 		amount=json['amount']

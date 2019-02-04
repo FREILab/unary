@@ -54,8 +54,8 @@ var app = new Vue({
 			if ('products' in this.$refs)
 				this.$refs['product'].forEach((p) => p.clear_popups());
 		},
-		fetch_transactions: function () {
-			socket.emit('transactions', {uid: this.currentUser.id}, ret => {
+		fetch_transactions: function (parameters) {
+			socket.emit('transactions', {uid: this.currentUser.id, ...parameters}, ret => {
 				if (ret.success) {
 					this.$refs.history.update(ret.today, ret.month);
 				} else {
@@ -98,7 +98,7 @@ var app = new Vue({
 		},
 		revert: function (tid) {
 			this.transact('revert', {tid: tid}).then(
-				() => this.fetch_transactions() // sync current state regarding transactions
+				() => this.fetch_transactions({short: true}) // sync current state
 				// note: we do not follow our philosophy of push notifications as it is a tailored list
 			);
 		},

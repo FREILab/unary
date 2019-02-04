@@ -88,7 +88,7 @@ Vue.component('history-modal', {
 		},
 		update: function (today, month) {
 			this.transToday = today;
-			this.transMonth = month;
+			if (month)	this.transMonth = month;
 		}
 	}
 });
