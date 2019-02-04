@@ -6951,12 +6951,18 @@ a.text-dark:hover, .text-dark.card.user:hover, a.text-dark:focus, .text-dark.car
 
 /* app root */
 #app:fullscreen {
-  background: url("../img/background.png") white repeat fixed; }
+  background: url("../img/background-l.png") white repeat; }
   #app:fullscreen .not-fullscreen {
     display: none; }
 
 #app:not(:fullscreen) .fullscreen {
   display: none; }
+
+#app hr {
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+  padding-top: 1px;
+  background: lightgray; }
 
 /* custom elements */
 button.buy, button.done {
@@ -6964,7 +6970,7 @@ button.buy, button.done {
 
 .card.user {
   cursor: pointer;
-  background: url("../img/background-glass.png") white repeat fixed; }
+  background: rgba(255, 255, 255, 0.65); }
   .card.user.guest {
     background: none; }
 
@@ -6972,10 +6978,10 @@ button.buy, button.done {
   min-height: 100%; }
   .card.product .card-body {
     padding-top: .75rem;
-    background: linear-gradient(to bottom, rgba(240, 240, 240, 0.85), transparent 65%, rgba(60, 60, 60, 0.95)); }
+    background: linear-gradient(to bottom, rgba(240, 240, 240, 0.85), transparent 65%); }
   .card.product .card-text {
     text-shadow: 2px 2px 6px white, -2px -2px 6px white; }
-  .card.product button {
+  .card.product button:not(:hover) {
     background: rgba(255, 255, 255, 0.85); }
 
 tr.cancelled {

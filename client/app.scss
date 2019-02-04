@@ -31,10 +31,17 @@ $font-family-sans-serif:	tstar;
 /* app root */
 #app {
 	&:fullscreen {
-		background: url('../img/background.png') white repeat fixed;
+		background: url('../img/background-l.png') white repeat;
 		& .not-fullscreen { display: none; }
 	}
 	&:not(:fullscreen) .fullscreen { display: none; }
+	// fix <hr> not standing out
+	& hr {
+		border-top: 1px solid white;
+		border-bottom: 1px solid white;
+		padding-top: 1px;
+		background: lightgray;
+	}
 }
 
 /* custom elements */
@@ -50,7 +57,8 @@ button.buy, button.done {
 	@extend a;
 	cursor: pointer;
 	// have glass-effect background except for colored guest button
-	background: url('../img/background-glass.png') white repeat fixed;
+	// does not work on Android background: url('../img/background-glass.png') white repeat fixed;
+	background: rgba(255,255,255,.65);
 	&.guest { background: none; @extend .bg-warning; }
 }
 
@@ -62,13 +70,13 @@ button.buy, button.done {
 		// fade background out in text area
 		background: linear-gradient(to bottom,
 									rgba(240, 240, 240, .85),
-									transparent 65%,
-									rgba( 60,  60,  60, .95));
+									transparent 65%);
+		//							rgba( 60,  60,  60, .95));
 	}
 	& .card-text { // also make text stand out
 		text-shadow: 2px 2px 6px white, -2px -2px 6px white;
 	}
-	& button { background: rgba(255, 255, 255, 0.85); }
+	& button:not(:hover) { background: rgba(255, 255, 255, 0.85); }
 }
 
 // a cancelled transaction
