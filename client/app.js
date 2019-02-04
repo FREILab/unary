@@ -38,18 +38,18 @@ var app = new Vue({
 			// add/update a simple timeout that returns to user selection
 			if (this.userTimeout)
 				clearTimeout(this.userTimeout);
-			this.userTimeout = setTimeout(() => { this.deselect_user(); }, 60000)
+			this.userTimeout = setTimeout(() => this.deselect_user(), 60000)
 		},
 		select_user: function (user) {
 			this.currentUser = user;
-			// remove user filter (considered outdated)
-			this.userFilter = '';
 			// start deselection timeout
 			this.update_timeout();
 		},
 		new_user: () => { /* TODO */ },
 		deselect_user: function () {
 			this.currentUser = null;
+			// remove user filter (considered outdated)
+			this.userFilter = '';
 			// ensure there are no leftover popups
 			if ('products' in this.$refs)
 				this.$refs['product'].forEach((p) => p.clear_popups());
