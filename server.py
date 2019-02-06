@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import time
 from flask import render_template
+from ruamel.yaml import YAML
 from sqlalchemy import exc
 from datetime import datetime, timedelta
 from init import app, db, socketio
@@ -29,9 +30,15 @@ def assets():
 def payload():
 	products = m.Product.query.filter_by(enabled=True).order_by('name')
 	users = m.User.query.filter_by(enabled=True).order_by('username')
+	try:
+		with open('data/doc/quiz.yaml') as f:
+			quiz = YAML().load(f)
+	except OSError:
+		quiz = {}
 	return {
 		'products': [p.export() for p in products.all()],
-		'users' : [u.export() for u in users.all()]
+		'users': [u.export() for u in users.all()],
+		'quiz': quiz
 	}
 
 # build failure json response (convenience)

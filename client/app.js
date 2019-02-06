@@ -8,6 +8,7 @@ var app = new Vue({
 	data: {
 		products: initial.products,
 		users: initial.users,
+		quiz: initial.quiz,
 		currentUser: null,
 		userFilter: '',
 		userTimeout : null,
