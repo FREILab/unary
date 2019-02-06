@@ -2,7 +2,6 @@
 import time
 from flask import render_template
 from ruamel.yaml import YAML
-from sqlalchemy import exc
 from datetime import datetime, timedelta
 from init import app, db, socketio
 import model as m
