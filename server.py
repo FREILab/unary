@@ -40,9 +40,13 @@ def payload():
 		'quiz': quiz
 	}
 
-# build failure json response (convenience)
+# build failure json response
 def failure(message):
 	return {'success': False, 'message': message}
+
+# build success json response
+def success(payload={}):
+	return {'success': True, **payload}
 
 # determine when this day started from our point of view
 def startOfDay():
@@ -56,43 +60,42 @@ def home():
 	return render_template('index.html', assets=assets(), payload=payload())
 
 @socketio.on('transactions')
-def transactions(json):
+def transactions(params):
+	if 'uid' not in params:
+		return failure('Nutzer ungültig!')
 	today = startOfDay()
 	# get today's transactions with complete data
-	daily = m.Transaction.query.filter_by(user_id=json['uid']) \
+	daily = m.Transaction.query.filter_by(user_id=params.get('uid')) \
 		.filter(m.Transaction.date >= today) \
 		.order_by(m.Transaction.date.desc())
 
-	ret = {
-		'success': True,
-		'today': [t.export(omit=('user')) for t in daily.all()],
-	}
+	ret = {'today': [t.export(omit=('user')) for t in daily.all()]}
 
-	if not json.get('short', False):
+	if not params.get('short', False):
 		# get longer backlog, but this time fuzzed out (we remove date info)
-		monthly = m.Transaction.query.filter_by(user_id=json['uid']) \
+		monthly = m.Transaction.query.filter_by(user_id=params['uid']) \
 			.filter(m.Transaction.date < today) \
 			.filter(m.Transaction.date > today - timedelta(days=28)) \
 			.order_by(m.Transaction.date.desc())
 		ret['month'] = [t.export(omit=('user', 'date')) for t in monthly.all()]
 
-	return ret
+	return success(ret)
 
 @socketio.on('purchase')
-def purchase(json):
-	user = m.User.query.get(json['uid'])
+def purchase(params):
+	user = m.User.query.get(params.get('uid', None))
 	if user is None:
 		return failure('Nutzer ungültig!')
-	if 'pid' in json:
-		product = m.Product.query.get(json['pid'])
+	if 'pid' in params:
+		product = m.Product.query.get(params['pid'])
 		if product is None:
 			return failure('Produkt ungültig!')
 		amount=product.prize
 	else:
-		if not json.get('amount', None):
+		if not 'amount' in params:
 			return failure('Weder Produkt, noch Betrag angegeben!')
 		product = None # for deposits, basically
-		amount=json['amount']
+		amount=params['amount']
 
 	# perform purchase
 	transaction = m.Transaction(user=user, product=product, amount=amount)
@@ -101,28 +104,28 @@ def purchase(json):
 	try:
 		db.session.commit()
 		socketio.emit('user changed', user.export())
-		return {'success': True}
+		return success()
 	except:
 		return failure('Datenbankeintrag gescheitert!')
 
 @socketio.on('revert')
-def revert(json):
-	transaction = m.Transaction.query.get(json['tid'])
+def revert(params):
+	transaction = m.Transaction.query.get(params.get('tid', None))
 	if transaction is None:
 		return failure('Transaktion ungültig!')
-	if transaction.user_id != json['uid']:
+	if transaction.user_id != params.get('uid', None):
 		return failure('Transaktion und Nutzer passen nicht zusammen!')
 	if transaction.date < startOfDay() or transaction.fulfilled:
 		return failure('Transaktion kann nicht mehr revidiert werden!')
 	if transaction.cancelled:
-		return {'success': True} # avoid error message on double taps
+		return success() # avoid error message on double taps
 
 	transaction.cancelled = True
 	transaction.user.balance += transaction.amount
 	try:
 		db.session.commit()
 		socketio.emit('user changed', transaction.user.export())
-		return {'success': True}
+		return success()
 	except:
 		return failure('Datenbankeintrag gescheitert!')
 
