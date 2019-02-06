@@ -37,7 +37,14 @@ Vue.component('history-modal', {
 				</template>
 			</b-table>
 		</template>
-		<p v-else>Heute noch nichts getrunken? 😾</p>
+		<p v-else-if="initialized">Heute noch nichts getrunken? 😾</p>
+		<div v-else class="d-flex justify-content-center">
+			<i class="p-4 m-4
+				rounded-circle border border-warning
+				fas fa-wrench fa-10x fa-spin">
+			</i>
+		</div>
+
 		<template v-if="transMonth.length">
 			<hr>
 			<h4>In den letzten 28 Tagen:</h4>
@@ -70,6 +77,7 @@ Vue.component('history-modal', {
 			fieldsMonth: {
 				product: f.product, amount: f.amount
 			},
+			initialized: false,
 			transToday: [],
 			transMonth: []
 		};
@@ -82,6 +90,7 @@ Vue.component('history-modal', {
 			'de-DE', {hour: 'numeric', minute: 'numeric'}).format(Date.parse(date)),
 		style_row: item => (item.cancelled ? 'cancelled' : ''),
 		reset: function () {
+			this.initialized = false;
 			this.transToday = [];
 			this.transMonth = [];
 			this.$emit('refresh');
@@ -89,6 +98,7 @@ Vue.component('history-modal', {
 		update: function (today, month) {
 			this.transToday = today;
 			if (month)	this.transMonth = month;
+			this.initialized = true;
 		}
 	}
 });
