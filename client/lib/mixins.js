@@ -12,8 +12,13 @@ var modalMixin = {
 		visible: false
 	}),
 	methods: {
-		onShow: function () { this.visible = true; },
-		onHide: function () { this.visible = false; },
-		close: function () { this.$refs.modal.hide(); }
+		onShow() { this.visible = true; },
+		onHide(doReset) {
+			if (doReset !== false)
+				this.reset();
+			this.visible = false;
+		},
+		close() { this.$refs.modal.hide(); },
+		reset() { Object.assign(this.$data, this.$options.data.apply(this)); }
 	},
 }

@@ -4,7 +4,7 @@ Vue.component('deposit-modal', {
 	<b-modal ref="modal" :id="domId"
 		hide-footer size="lg"
 		header-bg-variant="success" header-text-variant="light"
-		@show="onShow(); reset()" @hidden="onHide"
+		@show="onShow" @hidden="onHide"
 	>
 		<template slot="modal-title" v-if="user && visible">
 			Geld einzahlen
@@ -56,8 +56,5 @@ Vue.component('deposit-modal', {
 			this.triggered = true;
 			this.$emit('deposit', this.amount);
 		},
-		reset: function () {
-			this.amount = '0'; this.triggered = false;
-		}
 	}
 });

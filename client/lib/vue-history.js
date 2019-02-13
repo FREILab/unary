@@ -4,7 +4,7 @@ Vue.component('history-modal', {
 	<b-modal :id="domId"
 		hide-footer size="lg"
 		header-bg-variant="dark" header-text-variant="light"
-		@show="onShow(); reset()"
+		@show="onShow(); $emit('refresh')" @hidden="onHide"
 	>
 		<template slot="modal-title" v-if="user && visible">
 			Letzte Transaktionen
@@ -89,12 +89,6 @@ Vue.component('history-modal', {
 		format_date: date => new Intl.DateTimeFormat(
 			'de-DE', {hour: 'numeric', minute: 'numeric'}).format(Date.parse(date)),
 		style_row: item => (item.cancelled ? 'cancelled' : ''),
-		reset: function () {
-			this.initialized = false;
-			this.transToday = [];
-			this.transMonth = [];
-			this.$emit('refresh');
-		},
 		update(today, month) {
 			this.transToday = today;
 			if (month)	this.transMonth = month;
