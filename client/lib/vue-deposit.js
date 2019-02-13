@@ -45,14 +45,12 @@ Vue.component('deposit-modal', {
 			required: true
 		}
 	},
-	data: function () {
-		return {
-			amount: '0',
-			triggered: false // used to avoid double taps
-		};
-	},
+	data: () => ({
+		amount: '0',
+		triggered: false // used to avoid double taps
+	}),
 	methods: {
-		form_submit: function () {
+		form_submit() {
 			if (this.triggered)
 				return;
 			this.triggered = true;

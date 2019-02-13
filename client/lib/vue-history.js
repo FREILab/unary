@@ -63,7 +63,7 @@ Vue.component('history-modal', {
 			required: true
 		}
 	},
-	data: function () {
+	data() {
 		let f = {
 			product: { label: 'Produkt', tdClass: this.style_product, formatter: this.format_product },
 			date: { label: 'Uhrzeit', formatter: this.format_date },
@@ -95,7 +95,7 @@ Vue.component('history-modal', {
 			this.transMonth = [];
 			this.$emit('refresh');
 		},
-		update: function (today, month) {
+		update(today, month) {
 			this.transToday = today;
 			if (month)	this.transMonth = month;
 			this.initialized = true;

@@ -17,37 +17,36 @@ var app = new Vue({
 		lastServerError: ''
 	},
 	computed: {
-		filteredUsers: function () {
+		filteredUsers() {
 			return this.users.filter(u => {
 				if (u.id == 1) return false; // TODO: see guestUser below
 				return u.username.toLowerCase().startsWith(this.userFilter.toLowerCase());
 			});
 		},
-		guestUser: function () {
+		guestUser() {
 			// TODO: hack, maybe mark on the server or deliver separately?
 			return this.users.find(u => u.id == 1);
 		},
 
-		favoriteUsers: function () {
+		favoriteUsers() {
 			let latest = this.users.filter(u => (u !== this.guestUser && u.lastActivity))
 				.sort((a, b) => a.lastActivity < b.lastActivity)
 			return latest.slice(0, 5)
 		}
 	},
 	methods: {
-		update_timeout: function () {
+		update_timeout() {
 			// add/update a simple timeout that returns to user selection
 			if (this.userTimeout)
 				clearTimeout(this.userTimeout);
 			this.userTimeout = setTimeout(() => this.deselect_user(), 60000)
 		},
-		select_user: function (user) {
+		select_user(user) {
 			this.currentUser = user;
 			// start deselection timeout
 			this.update_timeout();
 		},
-		new_user: () => { /* TODO */ },
-		deselect_user: function () {
+		deselect_user() {
 			this.currentUser = null;
 			// remove user filter (considered outdated)
 			this.userFilter = '';
@@ -55,7 +54,7 @@ var app = new Vue({
 			if ('products' in this.$refs)
 				this.$refs['product'].forEach((p) => p.clear_popups());
 		},
-		fetch_transactions: function (parameters) {
+		fetch_transactions(parameters) {
 			socket.emit('transactions', {uid: this.currentUser.id, ...parameters}, ret => {
 				if (ret.success) {
 					this.$refs.history.update(ret.today, ret.month);
@@ -65,7 +64,7 @@ var app = new Vue({
 				}
 			});
 		},
-		transact: function (task, parameters) {
+		transact(task, parameters) {
 			this.update_timeout(); // honor user action
 			return new Promise((resolve, reject) => {
 				if (!this.connected) {
@@ -87,17 +86,17 @@ var app = new Vue({
 				});
 			}).catch((msg) => console.warn('Transaktionsfehler: ' + msg));
 		},
-		buy: function (product) {
+		buy(product) {
 			this.transact('purchase', {pid: product.id}).then(
 				() => this.$refs.product.find(c => c.product.id === product.id).add_popup()
 			);
 		},
-		deposit: function (amount) {
+		deposit(amount) {
 			this.transact('purchase', {amount: -amount}).then(
 				() => this.$refs.deposit.close() // TODO: provide explicit positive feedback
 			);
 		},
-		revert: function (tid) {
+		revert(tid) {
 			this.transact('revert', {tid: tid}).then(
 				() => this.fetch_transactions({short: true}) // sync current state
 				// note: we do not follow our philosophy of push notifications as it is a tailored list

@@ -14,24 +14,22 @@ Vue.component('animated-number', {
 			default: 500
 		}
 	},
-	data: function () {
-		return {
-			tweeningValue: 0
-		}
-	},
+	data: () => ({
+		tweeningValue: 0
+	}),
 	watch: {
-		value: function (newValue, oldValue) {
+		value(newValue, oldValue) {
 			this.tween(oldValue, newValue);
 		}
 	},
-	mounted: function () {
+	mounted() {
 		this.tweeningValue = this.value.toFixed(this.decimals);
 	},
 	methods: {
-		dynamicDuration: function (distance) {
+		dynamicDuration(distance) {
 			return this.duration * Math.log(Math.abs(distance) + 1);
 		},
-		tween: function (start, end) {
+		tween(start, end) {
 			var vm = this;
 			function animate () {
 				if (TWEEN.update()) {

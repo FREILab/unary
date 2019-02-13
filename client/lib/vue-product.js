@@ -38,7 +38,7 @@ Vue.component('product-card', {
 			required: true
 		}
 	},
-	data: function() {
+	data() {
 		uid++;
 		return {
 			buttonId: 'product_button_' + uid,
@@ -46,8 +46,8 @@ Vue.component('product-card', {
 		}
 	},
 	methods: {
-		clear_popups: function () { this.numPopup = 0; },
-		add_popup: function () {
+		clear_popups() { this.numPopup = 0; },
+		add_popup() {
 			this.numPopup++;
 			let that = this;
 			window.setTimeout(() => that.numPopup = Math.max(that.numPopup - 1, 0), 3000);
