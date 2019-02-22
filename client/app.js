@@ -28,11 +28,10 @@ var app = new Vue({
 			// TODO: hack, maybe mark on the server or deliver separately?
 			return this.users.find(u => u.id == 1);
 		},
-
 		favoriteUsers() {
-			let latest = this.users.filter(u => (u !== this.guestUser && u.lastActivity))
-				.sort((a, b) => a.lastActivity < b.lastActivity)
-			return latest.slice(0, 5)
+			let latest = this.users.filter(u => (u !== this.guestUser && u.lastActivity));
+			latest.sort((a, b) => Date.parse(b.lastActivity) - Date.parse(a.lastActivity));
+			return latest.slice(0, 5);
 		}
 	},
 	methods: {
