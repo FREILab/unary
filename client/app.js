@@ -1,14 +1,15 @@
 'use strict';
 
+var collator = new Intl.Collator('de', { sensitivity: 'base' });
+
 var socket = io();
 
 var app = new Vue({
 	el: '#app',
 	mixins: [moneyMixin],
 	data: {
-		products: initial.products,
-		users: initial.users,
-		quiz: initial.quiz,
+		products: initial.products.sort(collator.compare),
+		users: initial.users.sort(collator.compare),
 		currentUser: null,
 		userFilter: '',
 		userTimeout : null,

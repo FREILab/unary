@@ -27,8 +27,8 @@ def assets():
 
 # retrieve initial full data needed by client
 def payload():
-	products = m.Product.query.filter_by(enabled=True).order_by('name')
-	users = m.User.query.filter_by(enabled=True).order_by('username')
+	products = m.Product.query.filter_by(enabled=True)
+	users = m.User.query.filter_by(enabled=True)
 	try:
 		with open('data/doc/quiz.yaml') as f:
 			quiz = YAML().load(f)
