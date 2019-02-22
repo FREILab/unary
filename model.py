@@ -2,6 +2,7 @@
 import inspect, types
 from sqlalchemy import inspect as sqlinspect
 from init import db
+from hashlib import sha256
 
 class ExportableMixin(object):
 	# list of exportable attribute names
@@ -34,6 +35,7 @@ class User(ExportableMixin, db.Model):
 	enabled = db.Column(db.Boolean, default=True, nullable=False)
 	username = db.Column(db.String(80), unique=True, nullable=False)
 	fullname = db.Column(db.String(80), nullable=False)
+	email = db.Column(db.String(80), unique=True, nullable=False)
 	color = db.Column(db.String(20), default='black', nullable=False)
 	picture = db.Column(db.String(80), default='generic.png')
 	balance = db.Column(db.Float, default='0', nullable=False)
@@ -43,11 +45,15 @@ class User(ExportableMixin, db.Model):
 	transactions = db.relationship('Transaction', backref='user',
 		order_by=lambda: Transaction.date.desc())
 
-	export_blacklist = ['fullname', 'transactions', 'created']
+	export_blacklist = ['fullname', 'email', 'transactions', 'created']
 
 	@property # short prefix of full name that allows a broad search (privacy)
 	def namePrefix(self):
 		return self.fullname[:3]
+
+	@property # hash email to allow comparisons (privacy)
+	def emailDigest(self):
+		return sha256(self.email.lower().encode('utf-8')).hexdigest()
 
 	@property
 	def lastActivity(self):
