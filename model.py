@@ -39,7 +39,6 @@ class User(ExportableMixin, db.Model):
 	color = db.Column(db.String(20), default='black', nullable=False)
 	picture = db.Column(db.String(80), default='generic.png')
 	balance = db.Column(db.Float, default='0', nullable=False)
-	hasReadDisclaimer = db.Column(db.Boolean, default=False, nullable=False)
 	created = db.Column(db.DateTime, default=db.func.now())
 
 	transactions = db.relationship('Transaction', backref='user',
