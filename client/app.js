@@ -114,9 +114,18 @@ socket.on('disconnect', reason => {
 });
 
 socket.on('user changed', user => {
+	let needSort = true;
 	let target = app.currentUser; // typically the current user receives updates
-	if (!target || target.id !== user.id) {
+	if (!target || target.id !== user.id)
 		target = app.users.find(u => u.id === user.id);
+
+	if (target) {
+		needSort = target.username != user.username;
+		Object.assign(target, user);
+	} else {
+		app.users.push(user);
 	}
-	Object.assign(target, user);
+	if (needSort) {
+		app.users.sort(collator.compare);
+	}
 });
