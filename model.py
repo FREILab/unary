@@ -38,17 +38,18 @@ class User(ExportableMixin, db.Model):
 	picture = db.Column(db.String(80), default='generic.png')
 	balance = db.Column(db.Float, default='0', nullable=False)
 	hasReadDisclaimer = db.Column(db.Boolean, default=False, nullable=False)
+	created = db.Column(db.DateTime, default=db.func.now())
 
 	transactions = db.relationship('Transaction', backref='user',
 		order_by=lambda: Transaction.date.desc())
 
-	export_blacklist = ['fullname', 'transactions']
+	export_blacklist = ['fullname', 'transactions', 'created']
 
 	@property
 	def lastActivity(self):
 		if self.transactions and len(self.transactions) > 0:
 			return self.transactions[0].date
-		return None
+		return self.created
 
 	def __repr__(self):
 		return '<User {}>'.format(self.username)
