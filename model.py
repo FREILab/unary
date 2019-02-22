@@ -45,6 +45,10 @@ class User(ExportableMixin, db.Model):
 
 	export_blacklist = ['fullname', 'transactions', 'created']
 
+	@property # short prefix of full name that allows a broad search (privacy)
+	def namePrefix(self):
+		return self.fullname[:3]
+
 	@property
 	def lastActivity(self):
 		if self.transactions and len(self.transactions) > 0:

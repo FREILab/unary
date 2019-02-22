@@ -20,8 +20,14 @@ var app = new Vue({
 	computed: {
 		filteredUsers() {
 			return this.users.filter(u => {
-				if (u.id == 1) return false; // TODO: see guestUser below
-				return u.username.toLowerCase().startsWith(this.userFilter.toLowerCase());
+				if (u.id == 1) // TODO: see guestUser below
+					return false;
+				let filter = this.userFilter.toLowerCase();
+				// allow a broad filter on real name
+				let pre = u.namePrefix.toLowerCase();
+				if (pre.startsWith(filter.slice(0, pre.length)))
+					return true;
+				return u.username.toLowerCase().startsWith(filter);
 			});
 		},
 		guestUser() {
