@@ -109,7 +109,7 @@
 						></b-form-input>
 					</b-col>
 					<b-col offset="1" cols="2">
-						<b-button @click="new_user"
+						<b-button v-b-modal.adduser
 							variant="success" block size="lg"
 						>
 							Ich bin neu
@@ -177,6 +177,9 @@
 		<deposit-modal dom-id="deposit" ref="deposit"
 			:user="currentUser" @deposit="deposit">
 		</deposit-modal>
+		<adduser-modal dom-id="adduser"
+			:template="addUserTemplate" :users="users" @create="add_user">
+		</adduser-modal>
 	</div>
 	{% endraw %}
 </body>

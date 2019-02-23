@@ -12,10 +12,10 @@ def assets():
 		# note: use vue.min, socket.io.slim in production
 		'js': [
 			'jquery/jquery.slim.min', 'popper/popper.min', 'bootstrap/bootstrap.min',
-			'vue/vue', 'bootstrap-vue/bootstrap-vue.min',
+			'vue/vue', 'bootstrap-vue/bootstrap-vue.min', 'vue-color/vue-color.min',
 			'tweenjs/Tween', 'lib/vue-animated-number', 'lib/vue-balance',
 			'lib/mixins',
-			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit',
+			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit', 'lib/vue-adduser',
 			'socket.io/socket.io',
 			'fontawesome/all.min',
 		],
@@ -30,14 +30,14 @@ def payload():
 	products = m.Product.query.filter_by(enabled=True)
 	users = m.User.query.filter_by(enabled=True)
 	try:
-		with open('data/doc/quiz.yaml') as f:
-			quiz = YAML().load(f)
+		with open('data/content/new_user.yaml') as f:
+			newUser = YAML().load(f)
 	except OSError:
 		quiz = {}
 	return {
 		'products': [p.export() for p in products.all()],
 		'users': [u.export() for u in users.all()],
-		'quiz': quiz
+		'newUser': newUser
 	}
 
 # build failure json response
@@ -125,6 +125,31 @@ def revert(params):
 	try:
 		db.session.commit()
 		socketio.emit('user changed', transaction.user.export())
+		return success()
+	except:
+		return failure('Datenbankeintrag gescheitert!')
+
+@socketio.on('add user')
+def adduser(userdata):
+	# only take allowed input, and ensure it's all there
+	entries = ('username', 'fullname', 'color', 'email')
+	try:
+		user = m.User(**{k : userdata[k] for k in entries})
+	except KeyError:
+		return failure('Unvollständiger Account!')
+
+	# validate input TODO – not mission-critical here but would be nice
+
+	# check duplicates
+	if m.User.query.filter_by(username=user.username).count():
+		return failure('Nutzername ist bereits belegt!')
+	if m.User.query.filter_by(email=user.email).count():
+		return failure('Die Email-Adresse ist bereits bekannt!')
+
+	db.session.add(user)
+	try:
+		db.session.commit()
+		socketio.emit('user changed', user.export())
 		return success()
 	except:
 		return failure('Datenbankeintrag gescheitert!')

@@ -10,6 +10,7 @@ var app = new Vue({
 	data: {
 		products: initial.products.sort(collator.compare),
 		users: initial.users.sort(collator.compare),
+		addUserTemplate: initial.newUser,
 		currentUser: null,
 		userFilter: '',
 		userTimeout : null,
@@ -108,6 +109,14 @@ var app = new Vue({
 				// note: we do not follow our philosophy of push notifications as it is a tailored list
 			);
 		},
+		add_user(account) {
+			socket.emit('add user', account, ret => {
+				if (!ret.success) {
+					this.lastServerError = ret.message;
+					this.showErrorAlert = true;
+				}
+			});
+		}
 	}
 });
 

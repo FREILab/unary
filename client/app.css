@@ -6964,7 +6964,26 @@ a.text-dark:hover, .text-dark.card.user:hover, a.text-dark:focus, .text-dark.car
   padding-top: 1px;
   background: lightgray; }
 
+/* component style overrides */
+#app .vc-slider-hue-warp {
+  height: 20px; }
+  #app .vc-slider-hue-warp .vc-hue-picker {
+    width: 25px;
+    height: 25px;
+    transform: translate(-14px, -4px);
+    border-radius: 12px;
+    box-shadow: 0px 1px 6px 0 rgba(0, 0, 0, 0.7); }
+
+#app .vc-slider-swatch-picker {
+  height: 20px; }
+
+.vc-slider-swatch:nth-child(n) .vc-slider-swatch-picker.vc-slider-swatch-picker--active {
+  border-radius: 3.6px/2px; }
+
 /* custom elements */
+.fade-bg {
+  transition: background-color .75s ease-out; }
+
 button.buy, button.done {
   font-size: 1.5rem; }
 
