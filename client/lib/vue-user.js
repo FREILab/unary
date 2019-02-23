@@ -13,9 +13,7 @@ Vue.component('user-card', {
 	</b-card>
 	`,
 	props: {
-		user: {
-			required: true
-		},
+		user: { type: Object, required: true },
 	},
 });
 
