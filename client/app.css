@@ -4603,7 +4603,7 @@ button.bg-dark:focus {
 .border-left-0 {
   border-left: 0 !important; }
 
-.border-primary {
+.border-primary, .card.user.favorite {
   border-color: #007bff !important; }
 
 .border-secondary {

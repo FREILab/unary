@@ -81,6 +81,7 @@ button.buy, button.done {
 	// does not work on Android background: url('../img/background-glass.png') white repeat fixed;
 	background: rgba(255,255,255,.65);
 	&.guest { background: none; @extend .bg-warning; }
+	&.favorite { @extend .border-primary; }
 }
 
 // a product card in grid
