@@ -29,11 +29,9 @@ def assets():
 def payload():
 	products = m.Product.query.filter_by(enabled=True)
 	users = m.User.query.filter_by(enabled=True)
-	try:
-		with open('data/content/new_user.yaml') as f:
-			newUser = YAML().load(f)
-	except OSError:
-		quiz = {}
+	# Note: this may throw OSError or YAML errors
+	with open('data/content/new_user.yaml') as f:
+		newUser = YAML().load(f)
 	return {
 		'products': [p.export() for p in products.all()],
 		'users': [u.export() for u in users.all()],
