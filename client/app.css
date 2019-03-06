@@ -6951,7 +6951,8 @@ a.text-dark:hover, .text-dark.card.user:hover, a.text-dark:focus, .text-dark.car
 
 /* app root */
 #app:fullscreen {
-  background: url("../img/background-l.png") white repeat; }
+  background: url("../img/background-l.png") white repeat;
+  overflow-y: scroll; }
   #app:fullscreen .not-fullscreen {
     display: none; }
 

@@ -31,7 +31,11 @@ $font-family-sans-serif:	tstar;
 /* app root */
 #app {
 	&:fullscreen {
+		// set nice bg only when in fullscreen
 		background: url('../img/background-l.png') white repeat;
+		// fix scrolling
+		overflow-y: scroll;
+
 		& .not-fullscreen { display: none; }
 	}
 	&:not(:fullscreen) .fullscreen { display: none; }
