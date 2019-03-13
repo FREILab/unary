@@ -1,6 +1,8 @@
 'use strict';
 
 var collator = new Intl.Collator('de', { sensitivity: 'base' });
+var userCompare = (a, b) => collator.compare(a.username, b.username);
+var productCompare = (a, b) => collator.compare(a.name, b.name);
 
 var socket = io();
 
@@ -8,8 +10,8 @@ var app = new Vue({
 	el: '#app',
 	mixins: [moneyMixin],
 	data: {
-		products: initial.products.sort(collator.compare),
-		users: initial.users.sort(collator.compare),
+		products: initial.products.sort(productCompare),
+		users: initial.users.sort(userCompare),
 		addUserTemplate: initial.newUser,
 		currentUser: null,
 		userFilter: '',
@@ -141,6 +143,6 @@ socket.on('user changed', user => {
 		app.users.push(user);
 	}
 	if (needSort) {
-		app.users.sort(collator.compare);
+		app.users.sort(userCompare);
 	}
 });
