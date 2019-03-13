@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+from os import chdir
+import sys
 import time
 from flask import render_template
 from ruamel.yaml import YAML
@@ -164,4 +166,6 @@ def add_stamp(endpoint, values):
 	#return r
 
 if __name__ == '__main__':
+	# ensure we find our data, assets etc.
+	chdir(sys.path[0])
 	socketio.run(app)

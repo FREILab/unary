@@ -148,7 +148,10 @@
 			</b-container>
 		</div>
 		</transition-group>
-		<b-modal hide-footer hide-header size="lg" centered :visible="true" class="not-fullscreen">
+		<b-modal class="not-fullscreen"
+			:visible="true" no-close-on-esc no-close-on-backdrop
+			hide-footer hide-header size="lg" centered
+		>
 			<b-button @click="$refs.app.requestFullscreen();"
 				block size="lg" variant="outline-danger"
 			>
@@ -156,7 +159,7 @@
 				Getränkeabrechnungssystem im Vollbild starten
 			</b-button>
 		</b-modal>
-		
+
 		<b-alert variant="danger" fade
 			:show="!connected"
 		>
