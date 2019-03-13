@@ -116,7 +116,8 @@
 						</b-button>
 					</b-col>
 				</b-row>
-				<b-collapse id="patrons" :visible="!userFilter">
+				<!-- <b-collapse id="patrons" :visible="!userFilter"> -->
+				<div id="patrons" v-show="!userFilter">
 					<b-row>
 						<b-col v-for="u in favoriteUsers" :key="u.id"
 							sm="6" md="4" lg="3" xl="2"
@@ -133,7 +134,8 @@
 							></user-card>
 						</b-col>
 					</b-row>
-				</b-collapse>
+				</div>
+				<!--</b-collapse>-->
 				<hr :class="{slowfade: true, gone: userFilter}">
 				<b-row>
 					<b-col v-for="u in filteredUsers" :key="u.id"
