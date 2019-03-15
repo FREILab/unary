@@ -137,6 +137,7 @@ td.button {
 	position: absolute;
 }
 
+/* generally usable fade in/out animation */
 .slowfade {
 	transition: opacity 1.25s ease-out;
 	&.gone {
