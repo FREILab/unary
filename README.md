@@ -9,15 +9,19 @@ The software is composed of two parts:
 
 ## Note
 
-Expect an update to the software (with updated, cleaned-up dependencies) beginning of January 2020. Feel free to get in touch about using Unary via email: unary@lanrules.de
+Feel free to get in touch about using Unary via email: unary@lanrules.de
 
 ## Setup
 
 A short idea of how to set this up:
 
 * Replace the secret key in `init.py`
-* Run `bower install` and `npm install` in `client/` directory.
+* Run `npm install` in `client/` directory.
+* Set up the database (`flask db upgrade` using flask migrations)
+* Run `python sample_insert.py` to insert sample products (or using https://sqlitebrowser.org/).
+* Add product/user images in `data/img`
 * Replace the font in the SCSS with a webfont you can actually deliver
-* Set up the database (`flask db …` using migrations)
-* Add some content (e.g. with https://sqlitebrowser.org/, or see `sample_insert.py`)
-* Add product/user gfx in `data/img`
+
+## Run
+
+The application can be run like any regular Flask/WSGI app. The included `run.sh` can be used for production.

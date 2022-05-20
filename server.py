@@ -18,7 +18,7 @@ def assets():
 			'tweenjs/Tween', 'lib/vue-animated-number', 'lib/vue-balance',
 			'lib/mixins',
 			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit', 'lib/vue-adduser',
-			'socket.io/socket.io',
+			'socket.io/socket.io.min',
 			'fontawesome/all.min',
 		],
 		'css': [

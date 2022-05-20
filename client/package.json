@@ -10,16 +10,18 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
     "test",
     "tests"
   ],
   "private": true,
   "dependencies": {
-    "vue": "^2.5.16",
-    "socket.io-client": "^2.1.1",
-    "fontawesome": "^5.0.13",
+    "bootstrap-vue": "latest",
     "jquery": "^3.3.1",
-    "tween.js": "@tweenjs/tweenjs#^16.6.0"
+    "vue": "^2.5.16",
+    "vue-color": "latest",
+    "tween.js": "^16.6.0",
+    "socket.io-client": "^4.5.0",
+    "@fortawesome/fontawesome-free": "latest",
+    "@popperjs/core": "latest"
   }
 }
