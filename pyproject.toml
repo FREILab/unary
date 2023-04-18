@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "unary"
+version = "0.1.0"
+description = "A digital tally sheet for maker spaces."
+authors = ["Johannes Jordan <git@lanrules.de>"]
+license = "AGPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.2.3"
+Flask-SQLAlchemy = "^3.0.3"
+Flask-SocketIO = "^5.3.3"
+flask-migrate = "^4.0.4"
+pyyaml = "^6.0"
+eventlet = "^0.33.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

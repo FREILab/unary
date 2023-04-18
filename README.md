@@ -15,13 +15,19 @@ Feel free to get in touch about using Unary via email: unary@lanrules.de
 
 A short idea of how to set this up:
 
+* Run `poetry install` to setup Poetry environment
+* Run `npm install` in `client/` directory to install client-side dependencies
 * Replace the secret key in `init.py`
-* Run `npm install` in `client/` directory.
-* Set up the database (`flask db upgrade` using flask migrations)
-* Run `python sample_insert.py` to insert sample products (or using https://sqlitebrowser.org/).
+* Set up the database (`poetry run flask --app server.py db upgrade` using flask migrations)
+* Run `poetry run python sample_insert.py` to insert sample products (or using https://sqlitebrowser.org/).
 * Add product/user images in `data/img`
 * Replace the font in the SCSS with a webfont you can actually deliver
 
 ## Run
 
-The application can be run like any regular Flask/WSGI app. The included `run.sh` can be used for production.
+To run the application:
+
+* Run `poetry run flask --app server.py run` for development
+* Run `poetry run ./server.py` for production
+* Or, alternatively, add your favorite WSGI server to poetry and run it
+
