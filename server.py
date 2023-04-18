@@ -3,7 +3,7 @@ from os import chdir
 import sys
 import time
 from flask import render_template
-from ruamel.yaml import YAML
+import yaml
 from datetime import datetime, timedelta
 from init import app, db, socketio
 import model as m
@@ -33,7 +33,7 @@ def payload():
 	users = m.User.query.filter_by(enabled=True)
 	# Note: this may throw OSError or YAML errors
 	with open('data/content/new_user.yaml') as f:
-		newUser = YAML().load(f)
+		newUser = yaml.safe_load(f)
 	return {
 		'products': [p.export() for p in products.all()],
 		'users': [u.export() for u in users.all()],
