@@ -168,4 +168,5 @@ def add_stamp(endpoint, values):
 if __name__ == '__main__':
 	# ensure we find our data, assets etc.
 	chdir(sys.path[0])
+	print("Running on http://localhost:5000")
 	socketio.run(app)
