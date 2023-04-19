@@ -1,8 +1,9 @@
 Vue.component('deposit-modal', {
 	mixins: [moneyMixin, modalMixin],
 	template: `
-	<b-modal ref="modal" :id="domId"
+	<b-modal ref="modal" :id="domId" static="true"
 		hide-footer size="lg"
+		hide-backdrop content-class="shadow"
 		header-bg-variant="success" header-text-variant="light"
 		@show="onShow" @hidden="onHide"
 	>

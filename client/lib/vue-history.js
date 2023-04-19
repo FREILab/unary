@@ -1,8 +1,9 @@
 Vue.component('history-modal', {
 	mixins: [moneyMixin, modalMixin],
 	template: `
-	<b-modal :id="domId"
+	<b-modal :id="domId" static="true"
 		hide-footer size="lg"
+		hide-backdrop content-class="shadow"
 		header-bg-variant="dark" header-text-variant="light"
 		@show="onShow(); $emit('refresh')" @hidden="onHide"
 	>
@@ -17,19 +18,19 @@ Vue.component('history-modal', {
 			<b-table :fields="fieldsToday" :items="transToday"
 				striped	:tbody-tr-class="style_row"
 			>
-				<template slot="product" slot-scope="_">
-					<b-img v-if="_.item.product"
+				<template #cell(product)="data">
+					<b-img v-if="data.item.product"
 						height="20" rounded
-						:src="'static/img/products/' + _.item.product.picture">
+						:src="'static/img/products/' + data.item.product.picture">
 					</b-img>
-					{{ _.value }}
-					<small v-if="_.item.fulfilled">
+					{{ data.value }}
+					<small v-if="data.item.fulfilled">
 						<i class="text-success fas fa-check"></i>
 					</small>
 				</template>
-				<template slot="cancel" slot-scope="_">
-					<b-button v-if="!(_.item.cancelled || _.item.fulfilled)"
-						@click="$emit('revert', _.item.id)"
+				<template #cell(cancel)="data">
+					<b-button v-if="!(data.item.cancelled || data.item.fulfilled)"
+						@click="$emit('revert', data.item.id)"
 						variant="warning" size="sm"
 					>
 						<i class="fas fa-backspace"></i> Zurücknehmen
@@ -65,18 +66,14 @@ Vue.component('history-modal', {
 	},
 	data() {
 		let f = {
-			product: { label: 'Produkt', tdClass: this.style_product, formatter: this.format_product },
-			date: { label: 'Uhrzeit', formatter: this.format_date },
-			amount: { label: 'Betrag', class: 'text-right', tdClass: this.style_money, formatter: this.format_money },
-			cancel: { label: '', tdClass: 'button text-right'},
+			product: { key: 'product', label: 'Produkt', tdClass: this.style_product, formatter: this.format_product },
+			date: { key: 'date', label: 'Uhrzeit', formatter: this.format_date },
+			amount: { key: 'amount', label: 'Betrag', class: 'text-right', tdClass: this.style_money, formatter: this.format_money },
+			cancel: { key: 'cancel', label: '', tdClass: 'button text-right'},
 		}
 		return {
-			fieldsToday: {
-				product: f.product, date: f.date, amount: f.amount, cancel: f.cancel
-			},
-			fieldsMonth: {
-				product: f.product, amount: f.amount
-			},
+			fieldsToday: [f.product, f.date, f.amount, f.cancel],
+			fieldsMonth: [f.product, f.amount],
 			initialized: false,
 			transToday: [],
 			transMonth: []

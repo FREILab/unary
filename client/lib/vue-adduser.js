@@ -15,8 +15,9 @@ Vue.component('adduser-modal', {
 		'color-picker': VueColor.Slider
 	},
 	template: `
-	<b-modal ref="modal" :id="domId"
+	<b-modal ref="modal" :id="domId" static="true"
 		size="lg" centered
+		hide-backdrop content-class="shadow"
 		header-bg-variant="success" header-text-variant="light"
 		title="Neuen Nutzer registrieren"
 		@show="onShow" @hidden="onHide"
