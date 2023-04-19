@@ -14,7 +14,7 @@ def assets():
 		# note: use vue.min, socket.io.slim in production
 		'js': [
 			'jquery/jquery.slim.min', 'popper/popper.min', 'bootstrap/bootstrap.min',
-			'vue/vue', 'bootstrap-vue/bootstrap-vue.min', 'vue-color/vue-color.min',
+			'vue/vue.min', 'bootstrap-vue/bootstrap-vue.min', 'vue-color/vue-color.min',
 			'tweenjs/Tween', 'lib/vue-animated-number', 'lib/vue-balance',
 			'lib/mixins',
 			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit', 'lib/vue-adduser',
