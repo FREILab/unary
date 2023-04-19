@@ -16,7 +16,7 @@ Feel free to get in touch about using Unary via email: unary@lanrules.de
 A short idea of how to set this up:
 
 * Run `poetry install` to setup Poetry environment
-* Run `npm install` in `client/` directory to install client-side dependencies
+* Run `yarn install` in `client/` directory to install client-side dependencies
 * Replace the secret key in `init.py`
 * Set up the database (`poetry run flask --app server.py db upgrade` using flask migrations)
 * Run `poetry run python sample_insert.py` to insert sample products (or using https://sqlitebrowser.org/).
