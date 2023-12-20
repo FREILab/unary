@@ -1,0 +1,27 @@
+{
+  "name": "unary",
+  "authors": [
+    "Johannes Jordan <git@lanrules.de>"
+  ],
+  "description": "Digital tally-sheet replacement",
+  "main": "app.js",
+  "license": "AGPL-3.0-or-later",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "tests"
+  ],
+  "private": true,
+  "dependencies": {
+    "bootstrap-vue": "latest",
+    "jquery": "^3.3.1",
+    "vue": "^2.5.16",
+    "vue-color": "latest",
+    "tween.js": "^16.6.0",
+    "socket.io-client": "^4.5.0",
+    "@fortawesome/fontawesome-free": "latest",
+    "@popperjs/core": "latest"
+  }
+}

@@ -2,30 +2,11 @@
 from os import chdir
 import sys
 import time
-from flask import render_template
+from flask import render_template, send_from_directory
 import yaml
 from datetime import datetime, timedelta
 from init import app, db, socketio
 import model as m
-
-# retrieve all css, js files to bundle
-def assets():
-	return {
-		# note: use vue.min, socket.io.slim in production
-		'js': [
-			'jquery/jquery.slim.min', 'popper/popper.min', 'bootstrap/bootstrap.min',
-			'vue/vue.min', 'bootstrap-vue/bootstrap-vue.min', 'vue-color/vue-color.min',
-			'tweenjs/Tween', 'lib/vue-animated-number', 'lib/vue-balance',
-			'lib/mixins',
-			'lib/vue-product', 'lib/vue-user', 'lib/vue-history', 'lib/vue-deposit', 'lib/vue-adduser',
-			'socket.io/socket.io.min',
-			'fontawesome/all.min',
-		],
-		'css': [
-			'app', 'bootstrap-vue/bootstrap-vue.min',
-			'fontawesome/svg-with-js'
-		]
-	}
 
 # retrieve initial full data needed by client
 def payload():
@@ -57,7 +38,11 @@ def startOfDay():
 
 @app.route("/")
 def home():
-	return render_template('index.html', assets=assets(), payload=payload())
+	return render_template('index.html', payload=payload())
+
+@app.route('/assets/<path:filename>', methods=['GET'])
+def assets(filename):
+	return send_from_directory('client/dist/assets', filename, max_age=timedelta(days=365).total_seconds())
 
 @socketio.on('transactions')
 def transactions(params):
@@ -153,17 +138,6 @@ def adduser(userdata):
 		return success()
 	except:
 		return failure('Datenbankeintrag gescheitert!')
-
-@app.url_defaults
-def add_stamp(endpoint, values):
-	# add a version / datetime stamp to enforce browser reloading on new data
-	values['timestamp'] = time.time()
-
-#@app.after_request
-#def add_header(r):
-	# disable browser cache, remove for production!
-	#r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-	#return r
 
 if __name__ == '__main__':
 	# ensure we find our data, assets etc.
