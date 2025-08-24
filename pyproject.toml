@@ -1,20 +1,25 @@
-[tool.poetry]
+[project]
 name = "unary"
-version = "0.1.0"
+version = "0.2.0"
 description = "A digital tally sheet for maker spaces."
-authors = ["Johannes Jordan <git@lanrules.de>"]
-license = "AGPLv3"
+authors = [{ name = "Johannes Jordan", email = "git@lanrules.de" }]
+requires-python = ">=3.13"
 readme = "README.md"
+license = "AGPL-3.0-or-later"
+dependencies = [
+    "Flask>=2.3.2,<3",
+    "Flask-SQLAlchemy>=3.0.3,<4",
+    "Flask-SocketIO>=5.3.3,<6",
+    "flask-migrate>=4.0.4,<5",
+    "pyyaml~=6.0",
+    "eventlet>=0.33.3,<0.34",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-Flask = "^2.3.2"
-Flask-SQLAlchemy = "^3.0.3"
-Flask-SocketIO = "^5.3.3"
-flask-migrate = "^4.0.4"
-pyyaml = "^6.0"
-eventlet = "^0.33.3"
+[dependency-groups]
+dev = [
+    "ruff>=0.12.10",
+]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling>=1.24.2"]
+build-backend = "hatchling.build"

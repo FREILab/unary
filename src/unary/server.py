@@ -1,12 +1,13 @@
 #!/usr/bin/python3
-from os import chdir
-import sys
 import time
-from flask import render_template
-import yaml
 from datetime import datetime, timedelta
-from init import app, db, socketio
-import model as m
+
+import yaml
+from flask import render_template
+
+from . import app, db, socketio
+from .model import Product, Transaction, User
+
 
 # retrieve all css, js files to bundle
 def assets():
@@ -29,10 +30,10 @@ def assets():
 
 # retrieve initial full data needed by client
 def payload():
-	products = m.Product.query.filter_by(enabled=True)
-	users = m.User.query.filter_by(enabled=True)
+	products = Product.query.filter_by(enabled=True)
+	users = User.query.filter_by(enabled=True)
 	# Note: this may throw OSError or YAML errors
-	with open('data/content/new_user.yaml') as f:
+	with open(f"{app.config["DATA_PATH"]}/content/new_user.yaml") as f:
 		newUser = yaml.safe_load(f)
 	return {
 		'products': [p.export() for p in products.all()],
@@ -49,7 +50,7 @@ def success(payload={}):
 	return {'success': True, **payload}
 
 # determine when this day started from our point of view
-def startOfDay():
+def startOfDay() -> datetime:
 	if datetime.now().hour > 5: # let's say a day starts and ends at 5am
 		return datetime.today().replace(hour=5)
 	else:
@@ -65,52 +66,52 @@ def transactions(params):
 		return failure('Nutzer ungültig!')
 	today = startOfDay()
 	# get today's transactions with complete data
-	daily = m.Transaction.query.filter_by(user_id=params.get('uid')) \
-		.filter(m.Transaction.date >= today) \
-		.order_by(m.Transaction.date.desc())
+	daily = Transaction.query.filter_by(user_id=params.get('uid')) \
+		.filter(Transaction.date >= today) \
+		.order_by(Transaction.date.desc())
 
 	ret = {'today': [t.export(omit=('user')) for t in daily.all()]}
 
 	if not params.get('short', False):
 		# get longer backlog, but this time fuzzed out (we remove date info)
-		monthly = m.Transaction.query.filter_by(user_id=params['uid']) \
-			.filter(m.Transaction.date < today) \
-			.filter(m.Transaction.date > today - timedelta(days=28)) \
-			.order_by(m.Transaction.date.desc())
+		monthly = Transaction.query.filter_by(user_id=params['uid']) \
+			.filter(Transaction.date < today) \
+			.filter(Transaction.date > today - timedelta(days=28)) \
+			.order_by(Transaction.date.desc())
 		ret['month'] = [t.export(omit=('user', 'date')) for t in monthly.all()]
 
 	return success(ret)
 
 @socketio.on('purchase')
 def purchase(params):
-	user = m.User.query.get(params.get('uid', None))
+	user = User.query.get(params.get('uid', None))
 	if user is None:
 		return failure('Nutzer ungültig!')
 	if 'pid' in params:
-		product = m.Product.query.get(params['pid'])
+		product = Product.query.get(params['pid'])
 		if product is None:
 			return failure('Produkt ungültig!')
 		amount=product.prize
 	else:
-		if not 'amount' in params:
+		if 'amount' not in params:
 			return failure('Weder Produkt, noch Betrag angegeben!')
 		product = None # for deposits, basically
 		amount=params['amount']
 
 	# perform purchase
-	transaction = m.Transaction(user=user, product=product, amount=amount)
+	transaction = Transaction(user=user, product=product, amount=amount)
 	user.balance -= amount
 	db.session.add(transaction)
 	try:
 		db.session.commit()
 		socketio.emit('user changed', user.export())
 		return success()
-	except:
+	except Exception:
 		return failure('Datenbankeintrag gescheitert!')
 
 @socketio.on('revert')
 def revert(params):
-	transaction = m.Transaction.query.get(params.get('tid', None))
+	transaction = Transaction.query.get(params.get('tid', None))
 	if transaction is None:
 		return failure('Transaktion ungültig!')
 	if transaction.user_id != params.get('uid', None):
@@ -126,7 +127,7 @@ def revert(params):
 		db.session.commit()
 		socketio.emit('user changed', transaction.user.export())
 		return success()
-	except:
+	except Exception:
 		return failure('Datenbankeintrag gescheitert!')
 
 @socketio.on('add user')
@@ -134,16 +135,16 @@ def adduser(userdata):
 	# only take allowed input, and ensure it's all there
 	entries = ('username', 'fullname', 'color', 'email')
 	try:
-		user = m.User(**{k : userdata[k] for k in entries})
+		user = User(**{k : userdata[k] for k in entries})
 	except KeyError:
 		return failure('Unvollständiger Account!')
 
 	# validate input TODO – not mission-critical here but would be nice
 
 	# check duplicates
-	if m.User.query.filter_by(username=user.username).count():
+	if User.query.filter_by(username=user.username).count():
 		return failure('Nutzername ist bereits belegt!')
-	if m.User.query.filter_by(email=user.email).count():
+	if User.query.filter_by(email=user.email).count():
 		return failure('Die Email-Adresse ist bereits bekannt!')
 
 	db.session.add(user)
@@ -151,7 +152,7 @@ def adduser(userdata):
 		db.session.commit()
 		socketio.emit('user changed', user.export())
 		return success()
-	except:
+	except Exception:
 		return failure('Datenbankeintrag gescheitert!')
 
 @app.url_defaults
@@ -164,9 +165,3 @@ def add_stamp(endpoint, values):
 	# disable browser cache, remove for production!
 	#r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
 	#return r
-
-if __name__ == '__main__':
-	# ensure we find our data, assets etc.
-	chdir(sys.path[0])
-	print("Running on http://localhost:5000")
-	socketio.run(app)

@@ -1,8 +1,11 @@
 #!/usr/bin/python3
-import inspect, types
-from sqlalchemy import inspect as sqlinspect
-from init import db
+import inspect
 from hashlib import sha256
+
+from sqlalchemy import inspect as sqlinspect
+
+from . import db
+
 
 class ExportableMixin(object):
 	# list of exportable attribute names
@@ -23,7 +26,8 @@ class ExportableMixin(object):
 			self._fill_exportable_()
 		ret = {}
 		for name in self._exportable_:
-			if name in omit: continue
+			if name in omit:
+				continue
 			attr = getattr(self, name)
 			if isinstance(attr, ExportableMixin):
 				attr = attr.export()
