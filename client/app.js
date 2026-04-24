@@ -2,7 +2,7 @@
 
 var collator = new Intl.Collator('de', { sensitivity: 'base' });
 var userCompare = (a, b) => collator.compare(a.username, b.username);
-var productCompare = (a, b) => collator.compare(a.name, b.name);
+var productCompare = (a, b) => a.index - b.index
 
 var socket = io();
 
